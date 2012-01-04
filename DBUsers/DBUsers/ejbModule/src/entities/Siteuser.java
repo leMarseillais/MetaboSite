@@ -5,6 +5,14 @@ import javax.persistence.*;
 import java.util.Set;
 
 
+@NamedQueries({
+	@NamedQuery(name = "OneLogin", query = "SELECT u FROM Siteuser u "
+			+ "WHERE u.login LIKE :login"),
+	@NamedQuery(name = "OneLoginConnected", query = "SELECT u FROM Siteuser u "
+			+ "WHERE u.login LIKE :login AND u.connected = TRUE")
+
+})
+
 /**
  * The persistent class for the siteuser database table.
  * 
@@ -15,6 +23,8 @@ public class Siteuser implements Serializable {
 
 	@Id
 	private String login;
+
+	private Boolean connected;
 
 	private String corporation;
 
@@ -37,6 +47,14 @@ public class Siteuser implements Serializable {
 
 	public void setLogin(String login) {
 		this.login = login;
+	}
+
+	public Boolean getConnected() {
+		return this.connected;
+	}
+
+	public void setConnected(Boolean connected) {
+		this.connected = connected;
 	}
 
 	public String getCorporation() {

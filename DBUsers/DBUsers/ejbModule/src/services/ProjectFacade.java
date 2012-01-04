@@ -1,6 +1,8 @@
 package src.services;
 
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import src.entities.Project;
 
@@ -10,6 +12,9 @@ import src.entities.Project;
 @Stateless
 public class ProjectFacade extends AbstractFacade<Project> implements ProjectFacadeLocal {
       
+	@PersistenceContext(unitName = "DBUsers")
+	private EntityManager entityManager;
+	
 	private static final Class<Project> ENTITY_CLASS = Project.class;
 	
     /**
@@ -17,7 +22,11 @@ public class ProjectFacade extends AbstractFacade<Project> implements ProjectFac
      */
     public ProjectFacade() {
         super(ENTITY_CLASS);
-        // TODO Auto-generated constructor stub
     }
+
+	@Override
+	protected EntityManager getEntityManager() {
+		return entityManager;
+	}
 
 }
