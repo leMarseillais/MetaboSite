@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="DBMetabo">
+        <wb-resource deploy-path="/" source-path="/ejbModule" tag="defaultRootSource"/>
+        <property name="java-output-path" value="/DBMetabo/build/classes"/>
+        <property name="ClientProject" value="DBMetaboClient"/>
+        <property name="ClientJARURI" value="DBMetaboClient.jar"/>
+    </wb-module>
+</project-modules>
