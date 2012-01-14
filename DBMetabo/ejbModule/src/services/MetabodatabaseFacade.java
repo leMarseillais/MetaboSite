@@ -44,4 +44,30 @@ public class MetabodatabaseFacade extends AbstractFacade<Metabodatabase>
 		}
 		return answer;
 	}
+
+	@Override
+	public List<Metabodatabase> findByOrganism(String organism) {
+		List<Metabodatabase> all = findAll();
+		ArrayList<Metabodatabase> answer = new ArrayList<Metabodatabase>();
+		for (Metabodatabase metabodatabase : all) {
+			if (metabodatabase.getOrganism().contains(organism)) {
+				answer.add(metabodatabase);
+			}
+		}
+		return answer;
+	}
+
+	@Override
+	public List<Metabodatabase> findByKeywordAndOrganism(String keyword,
+			String organism) {
+		List<Metabodatabase> all = findAll();
+		ArrayList<Metabodatabase> answer = new ArrayList<Metabodatabase>();
+		for (Metabodatabase metabodatabase : all) {
+			if (metabodatabase.getOrganism().contains(organism)
+					&& metabodatabase.getKeyword().contains(keyword)) {
+				answer.add(metabodatabase);
+			}
+		}
+		return answer;
+	}
 }
