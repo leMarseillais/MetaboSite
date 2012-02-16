@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<facelet-taglib xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facelettaglibrary_2_0.xsd"
+	id="mbui">
+	
+	<namespace>http://metabosite.org/mbui</namespace>
+	<tag>
+		<tag-name>modSpace</tag-name>
+		<component>
+			<component-type>ModuleSpace</component-type>
+		</component>
+		<attribute>
+			<name>title</name>
+			<type>java.lang.String</type>
+		</attribute>
+	</tag>
+	<tag>
+		<tag-name>menu</tag-name>
+		<component>
+			<component-type>ModuleMenu</component-type>
+		</component>
+	</tag>
+	<tag>
+		<tag-name>menuItem</tag-name>
+		<component>
+			<component-type>ModuleMenuItem</component-type>
+		</component>
+		<attribute>
+			<name>name</name>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>href</name>
+			<type>java.lang.String</type>
+		</attribute>
+	</tag>
+	<tag>
+		<tag-name>optionsPanel</tag-name>
+		<component>
+			<component-type>ModuleOptions</component-type>
+		</component>
+	</tag>
+	<tag>
+		<tag-name>option</tag-name>
+		<component>
+			<component-type>ModuleOption</component-type>
+		</component>
+		<attribute>
+			<name>id</name>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>name</name>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>value</name>
+			<type>java.lang.String</type>
+		</attribute>
+	</tag>
+</facelet-taglib>
