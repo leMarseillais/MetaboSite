@@ -1,0 +1,425 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:roa="http://richfaces.org/a4j"
+	xmlns:ror="http://richfaces.org/rich"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:body>
+	<h:outputStylesheet name="css/jsfcrud.css" />
+	<ui:composition template="/templates/default.xhtml">
+		<ui:define name="title">#{UserI_RB.DossiersTitle}</ui:define>
+		<ui:define name="subtitle">#{UserI_RB.DossiersTitle}</ui:define>
+		<ui:define name="body">
+		
+		
+			<ror:messages ajaxRendered="true" globalOnly="true" />
+
+			<h:panelGrid columns="3" style="width: 100%;" id="files_panel">
+				<ror:panel style="min-width: 430px;">
+					<f:facet name="header">
+						<h:outputText value="#{Files_RB.treePanelHeader}" />
+					</f:facet>
+
+					<h:form>
+						<roa:commandButton value="#{Files_RB.addDir}"
+							rendered="#{utilisateurController.accessTo('MANAGER')}"
+							render="files_panel"
+							actionListener="#{fileSystemController.rootSelection()}">
+
+							<ror:componentControl target="addDir" operation="show"
+								event="begin" />
+						</roa:commandButton>
+					</h:form>
+					<roa:outputPanel ajaxRendered="true">
+						<h:outputText rendered="#{fileSystemController.roots.isEmpty()}"
+							value="#{Files_RB.noDir}" />
+					</roa:outputPanel>
+
+					<h:form id="files_tree_form">
+						<ror:tree id="files_tree" selectionType="ajax"
+							selectionChangeListener="#{fileSystemController.selectionChanged}"
+							var="item" nodeType="#{item.type}">
+
+							<roa:ajax event="selectionchange" render="files_panel" />
+							<roa:ajax event="click"
+								listener="#{fileSystemController.resetSelection()}"
+								render="files_panel" />
+
+							<ror:treeModelRecursiveAdaptor
+								roots="#{fileSystemController.roots}"
+								nodes="#{item.directories}">
+								<ror:treeNode id="dirNode" type="DIR"
+									onclick="var n=#{ror:component('dirNode')};if (!n.isExpanded()) n.toggle()"
+									iconCollapsed="#{fileSystemController.dirIcon(item.isRoot())}"
+									iconExpanded="#{fileSystemController.dirIcon(item.isRoot())}"
+									onmouseover="if (#{ror:element('dirFile')}) #{ror:element('dirFile')}.style.display = 'inline';"
+									onmouseout="if (#{ror:element('dirFile')}) #{ror:element('dirFile')}.style.display = 'none';">
+
+									<h:form>
+										<roa:outputPanel ajaxRendered="true">
+											<h:outputText value="#{item.shortPath}"
+												rendered="#{!item.details.isOPEN()}"
+												style="color: gray;font-style: italic;" />
+											<h:outputText value="#{item.shortPath}" style="color: green;"
+												rendered="#{item.details.isOPEN()}" />
+										</roa:outputPanel>
+
+										<roa:outputPanel id="dirFile" style="display: none;"
+											rendered="#{utilisateurController.accessTo('MANAGER')}">
+
+											<h:outputText value=" [ " />
+											<roa:commandLink value="#{Files_RB.addDirLink}"
+												actionListener="#{fileSystemController.resetSelection()}">
+
+												<ror:componentControl target="addDir" operation="show"
+													event="begin" />
+											</roa:commandLink>
+											<h:outputText value=" | " />
+											<roa:commandLink value="#{Files_RB.addFilesLink}"
+												actionListener="#{fileSystemController.resetSelection()}">
+
+												<ror:componentControl target="addFile" operation="show"
+													event="begin" />
+											</roa:commandLink>
+											<h:outputText value=" | " />
+											<roa:commandLink value="#{Files_RB.rmFilesLink}"
+												actionListener="#{fileSystemController.resetSelection()}">
+
+												<ror:componentControl target="rmDir" operation="show"
+													event="begin" />
+											</roa:commandLink>
+											<h:outputText value=" ] " />
+										</roa:outputPanel>
+									</h:form>
+								</ror:treeNode>
+
+								<ror:treeNode type="FILE" expanded="#{true}"
+									iconExpanded="#{fileSystemController.iconLeaf(item)}"
+									onmouseover="if (#{ror:element('dirFileLeaf')}) #{ror:element('dirFileLeaf')}.style.display = 'inline';"
+									onmouseout="if (#{ror:element('dirFileLeaf')}) #{ror:element('dirFileLeaf')}.style.display = 'none';">
+
+									<h:form>
+										<h:panelGrid columns="4"
+											columnClasses="noborder, noborder, noborder, noborder">
+
+											<roa:outputPanel ajaxRendered="true">
+												<h:outputText value="#{item.shortPath}"
+													rendered="#{!item.details.isOPEN()}"
+													style="color: gray;font-style: italic;" />
+												<h:outputText value="#{item.shortPath}"
+													style="color: green;" rendered="#{item.details.isOPEN()}" />
+											</roa:outputPanel>
+
+											<roa:outputPanel id="dirFileLeaf" style="display: none;"
+												rendered="#{utilisateurController.accessTo('MANAGER')}">
+
+												<roa:commandLink value=" × " style="text-decoration: none;"
+													actionListener="#{fileSystemController.resetSelection()}">
+													<ror:componentControl target="rmDir" operation="show"
+														event="begin" />
+												</roa:commandLink>
+											</roa:outputPanel>
+										</h:panelGrid>
+									</h:form>
+								</ror:treeNode>
+							</ror:treeModelRecursiveAdaptor>
+						</ror:tree>
+					</h:form>
+				</ror:panel>
+				<h:panelGroup>
+					
+					<roa:outputPanel ajaxRendered="true">
+
+						<ror:panel
+							rendered="#{fileSystemController.existsOldSelection() and
+										 fileSystemController.firstSelection.appPath.length() > 0}">
+							<f:facet name="header">
+								<h:outputText
+									value="#{Files_RB.nodeDetailsPanelHeader} - « #{fileSystemController.firstSelection.shortPath} »" />
+							</f:facet>
+							<roa:outputPanel ajaxRendered="true"
+								rendered="#{fileSystemController.firstSelection != null}">
+
+								<h:outputText value="#{Files_RB.author}"
+									rendered="#{utilisateurController.accessTo('MANAGER')}" />
+								<h:outputText value=" "
+									rendered="#{utilisateurController.accessTo('MANAGER')}" />
+								<h:outputText
+									value="#{fileSystemController.firstSelection.details.auteur.prenom}"
+									style="text-decoration: underline"
+									rendered="#{utilisateurController.accessTo('MANAGER')}" />
+								<h:outputText value=" "
+									rendered="#{utilisateurController.accessTo('MANAGER')}" />
+								<h:outputText
+									value="#{fileSystemController.firstSelection.details.auteur.nom}"
+									style="text-decoration: underline"
+									rendered="#{utilisateurController.accessTo('MANAGER')}" />
+								<h:outputText value=", "
+									rendered="#{utilisateurController.accessTo('MANAGER')}" />
+								<h:outputText value="#{Files_RB.date}"
+									rendered="#{utilisateurController.accessTo('MANAGER')}" />
+								<h:outputText value=" "
+									rendered="#{utilisateurController.accessTo('MANAGER')}" />
+								<h:outputText
+									value="#{fileSystemController.firstSelection.details.dateChargement}"
+									style="font-style: italic"
+									rendered="#{utilisateurController.accessTo('MANAGER')}">
+									<f:convertDateTime />
+								</h:outputText>
+								<h:panelGroup
+									rendered="#{fileSystemController.firstSelection.type == 'FILE'}">
+									<br />
+									<br />
+									<h:outputText value="#{Files_RB.sizeOfFile} " />
+									<h:outputText
+										value="#{fileSystemController.firstSelection.size}" />
+								</h:panelGroup>
+
+								<h:panelGroup
+									rendered="#{fileSystemController.firstSelection.type == 'FILE'}">
+									<br />
+									<h:outputLink value="#{global.contextRoot()}/dl">
+										<f:param name="id"
+											value="#{fileSystemController.firstSelection.details.id}" />
+										<h:outputText value="#{Files_RB.download}" />
+									</h:outputLink>
+								</h:panelGroup>
+
+								<h:panelGroup
+									rendered="#{fileSystemController.firstSelection.details.isOPEN()}">
+									<br />
+									<br />
+									<h:form>
+										<roa:commandLink value="#{Files_RB.closeFile}"
+											render="files_panel"
+											action="#{fileSystemController.toggleState()}" />
+									</h:form>
+								</h:panelGroup>
+
+								<h:panelGroup
+									rendered="#{!fileSystemController.firstSelection.details.isOPEN()}">
+									<br />
+									<br />
+									<h:form>
+										<roa:commandLink value="#{Files_RB.openFile}"
+											render="files_panel"
+											action="#{fileSystemController.toggleState()}" />
+									</h:form>
+								</h:panelGroup>
+
+								<hr />
+			                    <h:graphicImage 
+			                    	style="float: right;"
+			                    	onclick="
+				                    	var sdc = #{ror:element('sel_description_change')};
+				                    	var sd = #{ror:element('sel_description')};
+				                    	if (sdc.style.display == 'none') {
+					                    	sdc.style.display = 'block';
+			                            	sd.style.display = 'none'
+		                            	} else {
+			                            	sdc.style.display = 'none';
+			                            	sd.style.display = 'block';
+		                            	}"
+			                    	value="/resources/img/edit.png" />
+			                    <br />
+								<roa:outputPanel id="sel_description">
+									<h:outputText
+										converter="brConverter"
+										escape="false"
+										value="#{fileSystemController.firstSelection.details.description}" />
+								</roa:outputPanel>
+			                       
+								<roa:outputPanel>
+
+									<h:form id="sel_description_change" style="display: none">
+										<h:inputTextarea id="sel_description_change_ta"
+											onblur="#{ror:element('sel_description_change')}.style.display = 'none';
+			                            		#{ror:element('sel_description')}.style.display = 'block'"
+											value="#{fileSystemController.firstSelection.details.description}">
+
+											<roa:ajax event="blur" render="sel_description" 
+												listener="#{fileSystemController.changeDescListener()}" />
+										</h:inputTextarea>
+									</h:form>
+									
+								</roa:outputPanel>
+								
+								<hr />
+								
+							</roa:outputPanel>
+						</ror:panel>
+					</roa:outputPanel>
+				</h:panelGroup>
+			</h:panelGrid>
+			<ror:popupPanel id="addDir" modal="true" resizeable="false"
+				moveable="true" autosized="true">
+
+				<f:facet name="header">
+					<h:outputText value="#{Files_RB.addDirTitle}" />
+				</f:facet>
+				<f:facet name="controls">
+					<h:outputLink value="#"
+						onclick="#{ror:element('addDir_name')}.value = '';
+                            #{ror:component('addDir')}.hide(); return false;">
+                            ×
+                        </h:outputLink>
+				</f:facet>
+
+				<h:form>
+					<roa:outputPanel ajaxRendered="true">
+
+						<h:outputText
+							value="(#{fileSystemController.firstSelection.appPath})"
+							rendered="#{fileSystemController.firstSelection.appPath.length() > 0}" />
+					</roa:outputPanel>
+					<h:panelGrid columns="2">
+						<h:outputLabel for="addDir_name"
+							value="#{Files_RB.addDirLabel_name}" />
+						<h:inputText id="addDir_name" required="true"
+							requiredMessage="#{Files_RB.addDirMessage_name}"
+							value="#{fileSystemController.dirName}" />
+					</h:panelGrid>
+					<roa:commandButton value="#{Files_RB.addDirSubmit}"
+						render="files_panel"
+						actionListener="#{fileSystemController.createDir}"
+						oncomplete="#{ror:element('addDir_name')}.value = '';
+                            #{ror:component('addDir')}.hide();" />
+				</h:form>
+			</ror:popupPanel>
+
+			<ror:popupPanel id="addFile" modal="true" resizeable="false"
+				moveable="true" autosized="true" followByScroll="true">
+
+				<f:facet name="header">
+					<h:outputText value="#{Files_RB.addFile}" />
+				</f:facet>
+				<f:facet name="controls">
+					<h:outputLink value="#"
+						onclick="#{ror:component('addFile')}.hide(); return false;">
+                            ×
+                        </h:outputLink>
+				</f:facet>
+
+				<roa:outputPanel ajaxRendered="true">
+
+					<h:outputText
+						value="(#{fileSystemController.firstSelection.appPath})"
+						rendered="#{fileSystemController.firstSelection.appPath.length() > 0}" />
+				</roa:outputPanel>
+				<h:form>
+					<h:panelGroup>
+						<h:outputText
+							value="Fichiers acceptés : #{fileSystemController.acceptedTypes()}" />
+						<roa:outputPanel ajaxRendered="true" style="float: right;">
+							<roa:commandButton
+								rendered="#{fileSystemController.nFiles() > 0}"
+								value="#{Files_RB.addDirSubmit}"
+								actionListener="#{fileSystemController.saveFiles()}"
+								render="files_tree, files, chemin"
+								onclick="#{ror:component('addFile')}.hide();" />
+						</roa:outputPanel>
+					</h:panelGroup>
+					<h:panelGrid columns="2" columnClasses="top, top">
+						<ror:fileUpload id="chemin" limitRender="true"
+							fileUploadListener="#{fileSystemController.upload}"
+							acceptedTypes="#{fileSystemController.acceptedTypes()}"
+							addLabel="#{Rich_RB.addLabel}"
+							clearAllLabel="#{Rich_RB.clearAllLabel}"
+							clearLabel="#{Rich_RB.clearLabel}"
+							deleteLabel="#{Rich_RB.deleteLabel}"
+							uploadLabel="#{Rich_RB.uploadLabel}"
+							doneLabel="#{Rich_RB.doneLabel}"
+							serverErrorLabel="#{Rich_RB.serverErrorLabel}"
+							sizeExceededLabel="#{Rich_RB.sizeExceededLabel}">
+							<roa:ajax event="uploadcomplete" execute="@none" render="files" />
+						</ror:fileUpload>
+						<roa:outputPanel ajaxRendered="true">
+						<ror:panel id="files" styleClass="info" rendered="#{fileSystemController.fichiersModel.rowCount > 0}">
+							<f:facet name="header">
+								<h:outputText
+									value="#{MBFE_RB.CreateFichierTitle_uploadedFiles}" />
+							</f:facet>
+							<ror:dataGrid id="dataGridFichiers" columns="1"
+								value="#{fileSystemController.fichiersModel}" var="fichier">
+								<h:panelGroup>
+									<h:form>
+										<ror:inplaceInput id="nom" value="#{fichier.name}">
+											<roa:ajax event="blur" execute="@form" limitRender="true" />
+										</ror:inplaceInput>
+										<br />
+										<roa:commandLink id="cLinkDesc" limitRender="true"
+											value="#{MBFE_RB.CreateFichierTitle_desc}" execute="@none"
+											render="@none"
+											onclick="
+												var fd = #{ror:element('ficDesc')};
+												if (fd.style.display == 'none') {
+													fd.style.display = 'block';
+                                                	#{ror:element('desc_fichier')}.focus();
+												} else {
+													fd.style.display = 'none';
+												}" />
+                                            |
+                                            <roa:commandLink
+											value="#{MBFE_RB.CreateFichierTitle_delete}"
+											actionListener="#{fileSystemController.deleteListener()}"
+											render="dataGridFichiers" />
+										<br />
+										<roa:outputPanel id="ficDesc" style="display: none;">
+											<h:outputLabel for="desc_fichier"
+												value="#{MBFE_RB.CreateFichierLabel_descfichier}" />
+											<br />
+											<h:inputTextarea id="desc_fichier" value="#{fichier.desc}">
+												<roa:ajax event="blur" execute="@form" limitRender="true" />
+											</h:inputTextarea>
+										</roa:outputPanel>
+									</h:form>
+								</h:panelGroup>
+							</ror:dataGrid>
+						</ror:panel>
+						</roa:outputPanel>
+					</h:panelGrid>
+				</h:form>
+			</ror:popupPanel>
+
+			<ror:popupPanel id="rmDir" modal="true" resizeable="false"
+				moveable="true" autosized="true">
+
+				<f:facet name="header">
+					<h:outputText value="#{Files_RB.rmDirTitle}" />
+				</f:facet>
+				<f:facet name="controls">
+					<h:outputLink value="#"
+						onclick="#{ror:component('rmDir')}.hide(); return false;">
+                            ×
+                        </h:outputLink>
+				</f:facet>
+
+				<h:form>
+					<h:outputText value="#{Files_RB.rmDirConfirm}" />
+					<br />
+					<roa:outputPanel ajaxRendered="true">
+
+						<h:outputText
+							value="(#{fileSystemController.firstSelection.appPath})"
+							rendered="#{fileSystemController.firstSelection.appPath.length() > 0}" />
+					</roa:outputPanel>
+					<br />
+					<br />
+					<h:panelGrid columns="2" style="margin: 0 auto;">
+						<roa:commandButton value="#{Functs_RB.yes}" render="files_tree"
+							actionListener="#{fileSystemController.removeSelection}"
+							onclick="#{ror:component('rmDir')}.hide();" />
+						<roa:commandButton value="#{Functs_RB.no}"
+							onclick="#{ror:component('rmDir')}.hide();" />
+					</h:panelGrid>
+				</h:form>
+			</ror:popupPanel>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>
+

@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/klme-svn/!svn/ver/264/eclipse/klme-war/src/com/klme/war/bundles
+END
+FilesApp_fr.properties
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/klme-svn/!svn/ver/282/eclipse/klme-war/src/com/klme/war/bundles/FilesApp_fr.properties
+END
+RichFaces_fr.properties
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/klme-svn/!svn/ver/264/eclipse/klme-war/src/com/klme/war/bundles/RichFaces_fr.properties
+END
+Errors_fr.properties
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/klme-svn/!svn/ver/278/eclipse/klme-war/src/com/klme/war/bundles/Errors_fr.properties
+END
+UserInterface_fr.properties
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/klme-svn/!svn/ver/270/eclipse/klme-war/src/com/klme/war/bundles/UserInterface_fr.properties
+END
+ManagedBeansForEntities_fr.properties
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/klme-svn/!svn/ver/279/eclipse/klme-war/src/com/klme/war/bundles/ManagedBeansForEntities_fr.properties
+END
+Functionalities_fr.properties
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/klme-svn/!svn/ver/264/eclipse/klme-war/src/com/klme/war/bundles/Functionalities_fr.properties
+END

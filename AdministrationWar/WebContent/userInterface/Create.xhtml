@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ror="http://richfaces.org/rich"
+      xmlns:roa="http://richfaces.org/a4j">
+
+    <ui:composition template="/templates/default.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{MBFE_RB.CreateUtilisateurTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="subtitle">#{MBFE_RB.CreateUtilisateurTitle}</ui:define>
+        <ui:define name="body">
+            <roa:outputPanel id="messagePanel" ajaxRendered="true" layout="block">
+                <h:messages 
+                    globalOnly="true"
+                    errorClass="errors"
+                    infoClass="infos"
+                    layout="table" />
+            </roa:outputPanel>
+            <h:form>
+                <h:panelGrid columns="3">
+                    <h:outputLabel value="#{MBFE_RB.CreateUtilisateurLabel_pseudo}" for="login" />
+                    <h:inputText 
+                        id="login" 
+                        value="#{utilisateurController.selected.login}" 
+                        title="#{MBFE_RB.CreateUtilisateurTitle_pseudo}"
+                        required="true"
+                        requiredMessage="#{MBFE_RB.CreateUtilisateurRequiredMessage_pseudo}" />
+                    <h:message
+                        errorClass="errors"
+                        infoClass="infos"
+                        for="login" />
+                    <h:outputLabel value="#{MBFE_RB.CreateUtilisateurLabel_mdp}" for="password" />
+                    <h:inputText 
+                        id="password" 
+                        value="#{utilisateurController.selected.password}" 
+                        title="#{MBFE_RB.CreateUtilisateurTitle_mdp}"
+                        required="true"
+                        requiredMessage="#{MBFE_RB.CreateUtilisateurRequiredMessage_mdp}" />
+                    <h:message
+                        errorClass="errors"
+                        infoClass="infos"
+                        for="password" />                 
+                    <h:outputLabel value="#{MBFE_RB.CreateUtilisateurLabel_mail}" for="mail" />
+                    <h:inputText 
+                        id="mail"
+                        value="#{utilisateurController.selected.email}"
+                        required="true"
+                        requiredMessage="#{MBFE_RB.CreateUtilisateurRequiredMessage_mail}"
+                        title="#{MBFE_RB.CreateUtilisateurTitle_mail}">
+                        
+                        <f:validator validatorId="mailValidator" />
+                    </h:inputText>
+                    <h:message
+                        errorClass="errors"
+                        infoClass="infos"
+                        for="mail" />
+                    <h:outputLabel value="#{MBFE_RB.CreateUtilisateurLabel_societe}" for="corporation" />
+                    <h:inputText 
+                        id="corporation" 
+                        value="#{utilisateurController.selected.corporation}" 
+                        title="#{MBFE_RB.CreateUtilisateurTitle_societe}" />
+                </h:panelGrid>
+                <br />
+                <roa:commandLink 
+                    action="#{utilisateurController.create}" 
+                    render="@form"
+                    value="#{MBFE_RB.CreateUtilisateurSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink 
+                    action="#{utilisateurController.prepareList}" 
+                    value="#{MBFE_RB.CreateUtilisateurShowAllLink}" immediate="true"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

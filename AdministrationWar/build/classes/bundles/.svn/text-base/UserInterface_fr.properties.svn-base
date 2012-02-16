@@ -1,0 +1,19 @@
+#CONNEXION
+ConnectionTitle=Connexion
+ConnectionTitle2=Veuillez vous connecter :
+ConnectionLabel_pseudo=Nom : 
+ConnectionRequiredMessage_pseudo=Vous n'avez pas entr\u00E9 votre nom \!
+ConnectionLabel_mdp=Mot de passe : 
+ConnectionRequiredMessage_mdp=Vous n'avez pas entr\u00E9 de mot de passe \!
+ConnectionSubmit=Connexion
+
+#COMPTE
+CompteTitle=Compte
+CompteTitle_deco=D\u00E9connexion
+
+#DOSSIERS
+DossiersTitle=Gestionnaire de fichiers
+DossiersDls=T\u00E9l\u00E9chargement des consultations
+
+#FOOTER
+copyright=\u00A9 David Rueda - KLM[e] Architectes Tous droits r\u00E9serv\u00E9s.

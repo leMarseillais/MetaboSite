@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PROCESS model-entity="JSFProcess">
+ <PROCESS-ITEM NAME="rules:" SHAPE="32,17,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::0" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="Connection::#userInterface#connect.xhtml"
+    NAME="output" PATH="/userInterface/connect.xhtml"
+    TARGET="rules:#userInterface#connect.xhtml" TITLE="Connection" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="FilesAppManage::#fileInterface#manage.xhtml"
+    NAME="output1" PATH="/fileInterface/manage.xhtml"
+    TARGET="rules:#fileInterface#manage.xhtml" TITLE="FilesAppManage" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#userInterface#connect.xhtml"
+  PATH="/userInterface/connect.xhtml" SHAPE="240,33,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#fileInterface#manage.xhtml"
+  PATH="/fileInterface/manage.xhtml" SHAPE="256,177,0,0" model-entity="JSFProcessGroup"/>
+</PROCESS>

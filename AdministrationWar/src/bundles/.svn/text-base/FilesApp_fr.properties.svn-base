@@ -1,0 +1,50 @@
+filesPath=/home/davd/klme/files/
+notifyAuthorizedUsers=Avertir les utilisateurs
+closeFile=Cl\u00F4turer
+openFile=Activer
+historyPath=/home/davd/klme/admin/
+
+addDir=Cr\u00E9er un dossier
+addDirTitle=Nouveau dossier
+addDirLabel_name=Nom :
+addDirMessage_name=Nom requis !
+addDirLink=Cr\u00E9er un dossier
+addDirSubmit=Cr\u00E9er
+rmDirConfirm=\u00CAtes vous s\u00FBr de vouloir supprimer ce dossier ?
+rmFilesLink=Supprimer
+addFile=Ajouter des fichiers
+addFilesLink=Ajouter des fichiers
+rmFileConfirm=\u00CAtes vous s\u00FBr de vouloir supprimer ce fichier ?
+rmDirTitle=Supprimer le dossier
+rmNoAskMore=Ne plus demander.
+noDir=Aucun dossier disponible...
+
+dragIndicator=Faites glisser sur un dossier ou un fichier.
+dragUsersPanelHeader=Utilisateurs
+nodeDetailsPanelHeader=D\u00E9tails
+treePanelHeader=Arborescence des fichiers
+
+dropErrorNoFoundFile=Le Fichier n'a pas \u00E9t\u00E9 trouv\u00E9 dans la base de donn\u00E9es \!
+dragErrorNoFoundUser=L'utilisateur n'a pas \u00E9t\u00E9 trouv\u00E9 dans la base de donn\u00E9es \!
+
+addAuthorizedUserSuccess=L'utilisateur \u201C%1$s\u201D peut maintenant acc\u00E8der au %2$s \u00AB %3$s \u00BB.
+addAuthorizedUserError_exists=L'utilisateur \u201C%1$s\u201D peut d\u00E9j\u00E0 acc\u00E8der au %2$s \u00AB %3$s \u00BB.
+type_file=fichier
+type_file_M=Fichier
+type_dir=dossier
+type_dir_M=Dossier
+authorizedUsers=Utilisateurs :
+selectADir=Veuillez s\u00E9lectionner un dossier.
+
+author=Cr\u00E9\u00E9 par
+date=le
+
+sizeOfFile=Taille :
+
+affaire=Affaire
+download=T\u00E9l\u00E9charger
+consultsText=Sur cette page sont list\u00E9es toutes les pi\u00E8ces constitutives du dossier de consultation. 
+consultsText2=Cliquez sur la pi\u00E8ce ou le lot que vous recherchez pour le t\u00E9l\u00E9charger.
+
+dl_pdf=T\u00E9l\u00E9charger
+pdfTitle=Historique des t\u00E9l\u00E9chargements

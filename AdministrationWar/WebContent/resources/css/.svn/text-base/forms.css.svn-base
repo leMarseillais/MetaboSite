@@ -1,0 +1,17 @@
+.errors {
+    color: crimson;
+}
+
+.infos {
+    color: cornflowerblue;
+}
+
+.noborder {
+    border: 0;
+}
+
+.block_center {
+    display: block;
+    width: 100%;
+    text-align: center;
+}
