@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =========== FULL CONFIGURATION FILE ================================== -->
+<faces-config version="2.0" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+	<converter>
+		<converter-id>brConverter</converter-id>
+		<converter-class>converters.BrConverter</converter-class>
+	</converter>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>Connection</from-outcome>
+			<to-view-id>/userInterface/connect.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>FilesAppManage</from-outcome>
+			<to-view-id>/fileInterface/manage.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<validator>
+		<validator-id>mailValidator</validator-id>
+		<validator-class>userAdmin.MailValidator</validator-class>
+	</validator>
+	<managed-bean>
+		<managed-bean-name>utilisateurController</managed-bean-name>
+		<managed-bean-class>userAdmin.UserController</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>fileSystemController</managed-bean-name>
+		<managed-bean-class>fileAdmin.FileSystemController</managed-bean-class>
+		<managed-bean-scope>view</managed-bean-scope>
+	</managed-bean>
+	<application>
+		<locale-config>
+			<default-locale>fr</default-locale>
+		</locale-config>
+		<resource-bundle>
+			<base-name>bundles.ManagedBeansForEntities</base-name>
+			<var>MBFE_RB</var>
+		</resource-bundle>
+		<resource-bundle>
+			<base-name>bundles.Errors</base-name>
+			<var>Errors_RB</var>
+		</resource-bundle>
+		<resource-bundle>
+			<base-name>bundles.RichFaces</base-name>
+			<var>Rich_RB</var>
+		</resource-bundle>
+		<resource-bundle>
+			<base-name>bundles.UserInterface</base-name>
+			<var>UserI_RB</var>
+		</resource-bundle>
+		<resource-bundle>
+			<base-name>bundles.Functionalities</base-name>
+			<var>Functs_RB</var>
+		</resource-bundle>
+		<resource-bundle>
+			<base-name>bundles.FilesApp</base-name>
+			<var>Files_RB</var>
+		</resource-bundle>
+	</application>
+</faces-config>

@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:roa="http://richfaces.org/a4j"
+      xmlns:ror="http://richfaces.org/rich">
+    
+    <h:body>
+        <h:outputStylesheet name="css/jsfcrud.css"/>
+        <ui:composition template="/templates/default.xhtml">
+            <ui:define name="title">#{UserI_RB.ConnectionTitle}</ui:define>
+            <ui:define name="subtitle">#{UserI_RB.ConnectionTitle2}</ui:define>
+            <ui:define name="body">
+                <roa:outputPanel id="messagePanel" ajaxRendered="true" layout="block">
+                    <ror:messages 
+                        globalOnly="true" />
+                </roa:outputPanel>
+                <h:form>
+                    <h:panelGrid id="connexion" columns="3">
+                        <h:outputLabel 
+                            for="pseudo" 
+                            value="#{UserI_RB.ConnectionLabel_pseudo}" />
+                        <h:inputText 
+                            id="pseudo"
+                            value="#{utilisateurController.pseudo}"
+                            required="true"
+                            requiredMessage="#{UserI_RB.ConnectionRequiredMessage_pseudo}" />
+                        <ror:message 
+                            for="pseudo" />
+                        <h:outputLabel
+                            for="mdp"
+                            value="#{UserI_RB.ConnectionLabel_mdp}" />
+                        <h:inputSecret
+                            id="mdp"
+                            value="#{utilisateurController.mdp}" 
+                            required="true"
+                            requiredMessage="#{UserI_RB.ConnectionRequiredMessage_mdp}" />
+                        <ror:message 
+                            for="mdp" />
+                        <roa:commandButton
+                            value="#{UserI_RB.ConnectionSubmit}"
+                            action="#{utilisateurController.connect()}"
+                            execute="@form"
+                            render="connexion" />
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
