@@ -1,5 +1,7 @@
 package TaskManagement;
 
+import java.util.Set;
+
 public class Main {
 
 	private static TaskLauncher launcher;
@@ -11,15 +13,20 @@ public class Main {
 	public static void main(String[] args) {
 		TaskManager taskManager = TaskManager.getInstance();
 		for (int i = 0; i < 10; i++) {
-			taskManager.addTask(new Test1());
-			taskManager.addTask(new Test2());
-			taskManager.addTask(new Test3());
-			
+			System.out.println("nlsjnc");
+			taskManager.addTask(new Test1(),"ll");
+			taskManager.addTask(new Test2(),"oo");
+			taskManager.addTask(new Test3(),"pp");
+			Set<Task> tasks=taskManager.getTasksByUser("ll");
+			for (Task task : tasks) {
+				System.out.println(task.getClass().getName());
+			}
 		}
 		
 	}
 
 	public static class Test1 implements Task {
+		public String name ="jjj";
 		private static Integer cpt1=0;
 		@Override
 		public void launch() {

@@ -36,7 +36,6 @@ import bean.util.Nav;
 import bean.util.Reinitialize;
 import bean.util.Session;
 import bundles.Bundle;
-import file.management.Test;
 
 @ManagedBean(name = "utilisateurController")
 @SessionScoped
@@ -524,6 +523,5 @@ public class UserController implements Serializable, Reinitialize {
 	}
 	
 	public void laucnchTest(){
-		Test test =new Test();
 	}
 }

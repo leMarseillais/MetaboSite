@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import javax.ejb.EJB;
+
 import src.entities.Files;
 import src.entities.Siteuser;
 import src.services.FileFacadeLocal;
@@ -15,6 +17,8 @@ public class FilesManage {
 
 		private Files fileEntiti;
 		private File file;
+		
+		@EJB
 		private volatile static FileFacadeLocal ejbFacade;
 		
 		public FilesManage(String fileDescription, String mime,
@@ -39,6 +43,10 @@ public class FilesManage {
 		
 		public void saveFile(){
 			ejbFacade.create(fileEntiti);
+		}
+		
+		public File getFile(Files files){
+			return new File(files.getFileLocation());
 		}
 		
 }

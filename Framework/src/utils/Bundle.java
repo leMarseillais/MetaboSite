@@ -8,7 +8,7 @@ import java.util.ResourceBundle;
 
 
 public enum Bundle {
-	Files("File");
+	 Err("Errors"),Files("File");
 
     private ResourceBundle bundle;
     private String name;
