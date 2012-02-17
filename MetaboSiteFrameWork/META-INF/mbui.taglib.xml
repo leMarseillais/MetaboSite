@@ -20,6 +20,10 @@
 		<component>
 			<component-type>ModuleMenu</component-type>
 		</component>
+		<attribute>
+			<name>items</name>
+			<type>org.metabosite.model.ItemList</type>
+		</attribute>
 	</tag>
 	<tag>
 		<tag-name>menuItem</tag-name>

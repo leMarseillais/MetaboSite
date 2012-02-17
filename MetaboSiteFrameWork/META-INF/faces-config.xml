@@ -18,6 +18,11 @@
 	<component>
         <component-type>ModuleMenu</component-type>
         <component-class>org.metabosite.ui.tags.ModuleMenu</component-class>
+        
+        <property>
+            <property-name>items</property-name>
+            <property-class>org.metabosite.ui.tags.ModuleMenu</property-class>
+        </property>
 	</component>
 	<component>
         <component-type>ModuleMenuItem</component-type>

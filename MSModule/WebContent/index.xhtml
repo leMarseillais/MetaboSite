@@ -10,21 +10,26 @@
 
 	<h:head>
 		<meta charset="UTF-8" />
-		<title>Metabo Site</title>
+		<title>#{MODULE_RB.NAME}</title>
+		<link rel="stylesheet" type="text/css" href="#{resource['css:module.css']}" />
 	</h:head>
 	<h:body>
-		<mbui:menu>
-			<mbui:menuItem name="Google" href="http://www.google.fr/" />
-			<mbui:menuItem name="Cremi" href="http://emi.u-bordeaux1.fr/" />
-		</mbui:menu>
-		<mbui:optionsPanel options="#{moduleController.mesOptions}">
-			<mbui:option name="name" value="val" />
-		</mbui:optionsPanel>
-		<mbui:modSpace title="Mon Module">
-			<h:form>
-				<rich:calendar />
-				<a4j:commandLink value="Lancer l'analyse" />
-			</h:form>
-		</mbui:modSpace>
+		<div id="content">
+			<div id="left">
+				<mbui:menu items="#{moduleController.menuItems}">
+					<mbui:menuItem name="Google" href="http://www.google.fr/" />
+					<mbui:menuItem name="Cremi" href="http://emi.u-bordeaux1.fr/" />
+				</mbui:menu>
+				<mbui:optionsPanel options="#{moduleController.mesOptions}">
+					<mbui:option name="name" value="val" />
+				</mbui:optionsPanel>
+			</div>
+			<mbui:modSpace title="#{MODULE_RB.NAME}">
+				<h:form>
+					<rich:calendar />
+					<a4j:commandLink value="Lancer l'analyse" />
+				</h:form>
+			</mbui:modSpace>
+		</div>
 	</h:body>
 </html>
