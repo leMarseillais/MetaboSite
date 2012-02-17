@@ -143,49 +143,49 @@ public class SiteUserFacade extends AbstractUserFacade<Siteuser> implements
 	public boolean create(Siteuser entity) {
 		Boolean work = false;
 		Boolean test = true;
-		try {
-			utx.begin();
+//		try {
+//			utx.begin();
 			if (entityManager.find(Siteuser.class, entity.getLogin()) == null) {
 				getEntityManager().persist(entity);
 				work = true;
 			}
-			utx.commit();
-		} catch (NotSupportedException e) {
-			test = false;
-			e.printStackTrace();
-		} catch (SystemException e) {
-			test = false;
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			test = false;
-			e.printStackTrace();
-		} catch (IllegalStateException e) {
-			test = false;
-			e.printStackTrace();
-		} catch (RollbackException e) {
-			test = false;
-			e.printStackTrace();
-		} catch (HeuristicMixedException e) {
-			test = false;
-			e.printStackTrace();
-		} catch (HeuristicRollbackException e) {
-			test = false;
-			e.printStackTrace();
-		}
-		if (!test) {
-			try {
-				utx.setRollbackOnly();
-			} catch (IllegalStateException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SecurityException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SystemException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+//			utx.commit();
+//		} catch (NotSupportedException e) {
+//			test = false;
+//			e.printStackTrace();
+//		} catch (SystemException e) {
+//			test = false;
+//			e.printStackTrace();
+//		} catch (SecurityException e) {
+//			test = false;
+//			e.printStackTrace();
+//		} catch (IllegalStateException e) {
+//			test = false;
+//			e.printStackTrace();
+//		} catch (RollbackException e) {
+//			test = false;
+//			e.printStackTrace();
+//		} catch (HeuristicMixedException e) {
+//			test = false;
+//			e.printStackTrace();
+//		} catch (HeuristicRollbackException e) {
+//			test = false;
+//			e.printStackTrace();
+//		}
+//		if (!test) {
+//			try {
+//				utx.setRollbackOnly();
+//			} catch (IllegalStateException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (SecurityException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (SystemException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
 		return work;
 	}
 
@@ -211,93 +211,93 @@ public class SiteUserFacade extends AbstractUserFacade<Siteuser> implements
 
 	@Override
 	public void edit(Siteuser entity) {
-		Boolean test = true;
-		try {
-			utx.begin();
+//		Boolean test = true;
+//		try {
+//			utx.begin();
 			getEntityManager().merge(entity);
-			utx.commit();
-		} catch (NotSupportedException e) {
-			test = false;
-			e.printStackTrace();
-		} catch (SystemException e) {
-			test = false;
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			test = false;
-			e.printStackTrace();
-		} catch (IllegalStateException e) {
-			test = false;
-			e.printStackTrace();
-		} catch (RollbackException e) {
-			test = false;
-			e.printStackTrace();
-		} catch (HeuristicMixedException e) {
-			test = false;
-			e.printStackTrace();
-		} catch (HeuristicRollbackException e) {
-			test = false;
-			e.printStackTrace();
-		}
-		if (!test) {
-			try {
-				utx.setRollbackOnly();
-			} catch (IllegalStateException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SecurityException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SystemException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+//			utx.commit();
+//		} catch (NotSupportedException e) {
+//			test = false;
+//			e.printStackTrace();
+//		} catch (SystemException e) {
+//			test = false;
+//			e.printStackTrace();
+//		} catch (SecurityException e) {
+//			test = false;
+//			e.printStackTrace();
+//		} catch (IllegalStateException e) {
+//			test = false;
+//			e.printStackTrace();
+//		} catch (RollbackException e) {
+//			test = false;
+//			e.printStackTrace();
+//		} catch (HeuristicMixedException e) {
+//			test = false;
+//			e.printStackTrace();
+//		} catch (HeuristicRollbackException e) {
+//			test = false;
+//			e.printStackTrace();
+//		}
+//		if (!test) {
+//			try {
+//				utx.setRollbackOnly();
+//			} catch (IllegalStateException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (SecurityException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (SystemException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
 
 	}
 
 	@Override
 	public void remove(Siteuser entity){
-		Boolean test = true;
-		try {
-		utx.begin();
+//		Boolean test = true;
+//		try {
+//		utx.begin();
 		getEntityManager().remove(getEntityManager().merge(entity));
-		utx.commit();
-		} catch (NotSupportedException e) {
-			test = false;
-			e.printStackTrace();
-		} catch (SystemException e) {
-			test = false;
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			test = false;
-			e.printStackTrace();
-		} catch (IllegalStateException e) {
-			test = false;
-			e.printStackTrace();
-		} catch (RollbackException e) {
-			test = false;
-			e.printStackTrace();
-		} catch (HeuristicMixedException e) {
-			test = false;
-			e.printStackTrace();
-		} catch (HeuristicRollbackException e) {
-			test = false;
-			e.printStackTrace();
-		}
-		if (!test) {
-			try {
-				utx.setRollbackOnly();
-			} catch (IllegalStateException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SecurityException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SystemException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+//		utx.commit();
+//		} catch (NotSupportedException e) {
+//			test = false;
+//			e.printStackTrace();
+//		} catch (SystemException e) {
+//			test = false;
+//			e.printStackTrace();
+//		} catch (SecurityException e) {
+//			test = false;
+//			e.printStackTrace();
+//		} catch (IllegalStateException e) {
+//			test = false;
+//			e.printStackTrace();
+//		} catch (RollbackException e) {
+//			test = false;
+//			e.printStackTrace();
+//		} catch (HeuristicMixedException e) {
+//			test = false;
+//			e.printStackTrace();
+//		} catch (HeuristicRollbackException e) {
+//			test = false;
+//			e.printStackTrace();
+//		}
+//		if (!test) {
+//			try {
+//				utx.setRollbackOnly();
+//			} catch (IllegalStateException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (SecurityException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (SystemException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
 	}
 
 }

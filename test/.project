@@ -5,6 +5,7 @@
 	<projects>
 		<project>DBUsers</project>
 		<project>AdministrationWar</project>
+		<project>Framework</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

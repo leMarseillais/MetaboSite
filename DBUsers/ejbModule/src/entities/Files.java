@@ -110,6 +110,20 @@ public class Files implements Serializable {
 	public void setExtention(String extention) {
 		this.extention = extention;
 	}
+
+	public Files(String fileLocation, Long creationDate, Long modifDate,
+			String fileName, String fileDescription, String mime,
+			String extention, Siteuser siteuser) {
+		this.fileLocation = fileLocation;
+		this.creationDate = creationDate;
+		this.modifDate = modifDate;
+		this.fileName = fileName;
+		this.fileDescription = fileDescription;
+		this.mime = mime;
+		this.extention = extention;
+		this.siteuser = siteuser;
+	}
+	
 	
 	
 }

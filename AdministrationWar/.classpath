@@ -18,5 +18,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/DBUsers"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Framework"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

@@ -22,11 +22,6 @@ import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponseWrapper;
-import javax.transaction.HeuristicMixedException;
-import javax.transaction.HeuristicRollbackException;
-import javax.transaction.NotSupportedException;
-import javax.transaction.RollbackException;
-import javax.transaction.SystemException;
 
 import src.EJBKException;
 import src.entities.Siteuser;
@@ -41,6 +36,7 @@ import bean.util.Nav;
 import bean.util.Reinitialize;
 import bean.util.Session;
 import bundles.Bundle;
+import file.management.Test;
 
 @ManagedBean(name = "utilisateurController")
 @SessionScoped
@@ -526,5 +522,8 @@ public class UserController implements Serializable, Reinitialize {
 		}
 		return null;
 	}
-
+	
+	public void laucnchTest(){
+		Test test =new Test();
+	}
 }
