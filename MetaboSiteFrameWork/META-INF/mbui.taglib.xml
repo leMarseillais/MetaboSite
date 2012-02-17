@@ -40,6 +40,10 @@
 		<component>
 			<component-type>ModuleOptions</component-type>
 		</component>
+		<attribute>
+			<name>options</name>
+			<type>org.metabosite.model.OptionList</type>
+		</attribute>
 	</tag>
 	<tag>
 		<tag-name>option</tag-name>

@@ -3,6 +3,8 @@
 	<name>MetaboSiteFrameWork</name>
 	<comment></comment>
 	<projects>
+		<project>AdministrationWar</project>
+		<project>DBUsers</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

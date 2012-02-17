@@ -58,17 +58,17 @@ public class ModuleOption extends UIComponentBase {
 	public void encodeBegin(FacesContext context) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		writer.startElement("div", this);
-		if (id != null)
-			writer.writeAttribute("id", id, "id");
+		if (getId() != null)
+			writer.writeAttribute("id", getId(), "id");
 		
 		writer.startElement("span", this);
 		writer.writeAttribute("class", "optionKey", null);
-		writer.writeText(name, "name");
+		writer.writeText(getName(), "name");
 		writer.endElement("span");
 		
 		writer.startElement("span", this);
 		writer.writeAttribute("class", "optionValue", null);
-		writer.writeText(value, "value");
+		writer.writeText(getValue(), "value");
 		writer.endElement("span");
 		
 		writer.endElement("div");

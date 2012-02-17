@@ -36,7 +36,12 @@
 	</component>
 	<component>
         <component-type>ModuleOptions</component-type>
-        <component-class>org.metabosite.ui.tags.ModuleMenu</component-class>
+        <component-class>org.metabosite.ui.tags.ModuleOptions</component-class>
+        
+        <property>
+            <property-name>options</property-name>
+            <property-class>org.metabosite.ui.tags.ModuleOptions</property-class>
+        </property>
 	</component>
 	<component>
         <component-type>ModuleOption</component-type>

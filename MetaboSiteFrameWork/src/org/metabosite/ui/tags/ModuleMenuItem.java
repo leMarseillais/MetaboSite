@@ -44,8 +44,8 @@ public class ModuleMenuItem extends UIComponentBase {
 	public void encodeBegin(FacesContext context) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		writer.startElement("a", this);
-		writer.writeAttribute("href", href, "href");
-		writer.writeText(name, "name");
+		writer.writeAttribute("href", getHref(), "href");
+		writer.writeText(getName(), "name");
 		writer.endElement("a");
 		
 		super.encodeBegin(context);

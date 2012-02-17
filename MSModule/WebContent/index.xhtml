@@ -17,11 +17,14 @@
 			<mbui:menuItem name="Google" href="http://www.google.fr/" />
 			<mbui:menuItem name="Cremi" href="http://emi.u-bordeaux1.fr/" />
 		</mbui:menu>
-		<mbui:optionsPanel>
+		<mbui:optionsPanel options="#{moduleController.mesOptions}">
 			<mbui:option name="name" value="val" />
 		</mbui:optionsPanel>
 		<mbui:modSpace title="Mon Module">
 			<h:outputText value="test" />
+		</mbui:modSpace>
+		<mbui:modSpace title="Mon Module 2">
+			<h:outputText value="test32" />
 		</mbui:modSpace>
 	</h:body>
 </html>
