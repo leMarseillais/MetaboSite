@@ -62,4 +62,14 @@
             <property-class>org.metabosite.ui.tags.ModuleOption</property-class>
         </property>
 	</component>
+	
+	<application>
+		<locale-config>
+			<default-locale>fr</default-locale>
+		</locale-config>
+		<resource-bundle>
+			<base-name>org.metabosite.bundles.UI</base-name>
+			<var>UI_RB</var>
+		</resource-bundle>
+	</application>
 </faces-config>
