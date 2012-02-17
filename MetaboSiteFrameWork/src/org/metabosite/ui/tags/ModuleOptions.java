@@ -4,14 +4,13 @@ import java.io.IOException;
 import java.util.Iterator;
 
 import javax.el.ValueExpression;
-import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.metabosite.model.Option;
 import org.metabosite.model.OptionList;
 
-public class ModuleOptions extends UIComponentBase {
+public class ModuleOptions extends UniqTag {
 	
 	private OptionList options = new OptionList();
 	private ValueExpression ve;
@@ -32,7 +31,6 @@ public class ModuleOptions extends UIComponentBase {
 	@Override
 	public void encodeBegin(FacesContext context) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
-		writer.startElement("div", this);
 		
 		for (Iterator<Option> it = getOptions().iterator(); it.hasNext();) {
 			Option o = it.next();
@@ -58,9 +56,6 @@ public class ModuleOptions extends UIComponentBase {
 	@Override
 	public void encodeEnd(FacesContext context) throws IOException {
 		super.encodeEnd(context);
-
-		ResponseWriter writer = context.getResponseWriter();
-		writer.endElement("div");
 	}
 
 	@Override
