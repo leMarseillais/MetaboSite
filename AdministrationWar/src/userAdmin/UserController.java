@@ -28,8 +28,6 @@ import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 
-
-
 import src.EJBKException;
 import src.entities.Siteuser;
 import src.services.SiteUserFacadeLocal;
@@ -48,10 +46,11 @@ import bundles.Bundle;
 @SessionScoped
 public class UserController implements Serializable, Reinitialize {
 
-	private Siteuser user = new Siteuser("ghf", true, "vgc su", RightsManager.getInstance().toLong(Access.ADMIN), "gsc uy@biscb.ci", "kbci");
+	private Siteuser user = new Siteuser("ghf", true, "vgc su", RightsManager
+			.getInstance().toLong(Access.ADMIN), "gsc uy@biscb.ci", "kbci");
 	private DataModel<Siteuser> items = null;
 	private DataModel<Siteuser> userItems = null;
-	
+
 	@EJB
 	private SiteUserFacadeLocal ejbFacadeLocal;
 
@@ -218,17 +217,19 @@ public class UserController implements Serializable, Reinitialize {
 			this.user.setDroit(Global.getRightsManager().toLong(Access.ADMIN));
 
 			Boolean work = getEjbFacadeLocal().create(this.user);
-			if (work){
-				JsfUtil.addSuccessMessage(mbfe_rb.getString("UtilisateurCreated"));
-			}else {
+			if (work) {
+				JsfUtil.addSuccessMessage(mbfe_rb
+						.getString("UtilisateurCreated"));
+			} else {
 				JsfUtil.addErrorMessage(mbfe_rb.getString("Login existant"));
 			}
 			Global.reinitUserSessions();
 
 			return prepareList();
 		} catch (Exception e) {
-			Logger.getLogger(UserController.class.getName()).log(Level.INFO, null,e);
-			
+			Logger.getLogger(UserController.class.getName()).log(Level.INFO,
+					null, e);
+
 			JsfUtil.addErrorMessage(e,
 					mbfe_rb.getString("PersistenceErrorOccured"));
 			return null;
@@ -245,7 +246,8 @@ public class UserController implements Serializable, Reinitialize {
 		ResourceBundle mbfe_rb = Bundle.MBFE.getBundle();
 		try {
 			if (this.user.getPassword().isEmpty()) {
-				this.user.setPassword(ejbFacadeLocal.findById(this.user.getLogin()).getPassword());
+				this.user.setPassword(ejbFacadeLocal.findById(
+						this.user.getLogin()).getPassword());
 			}
 			this.user.setDroit(Global.getRightsManager().toLong(access));
 			getEjbFacadeLocal().edit(this.user);
@@ -270,290 +272,259 @@ public class UserController implements Serializable, Reinitialize {
 	}
 
 	private void performDestroy() {
-        ResourceBundle mbfe_rb = Bundle.MBFE.getBundle();
-        try {
+		ResourceBundle mbfe_rb = Bundle.MBFE.getBundle();
+		try {
 
-            // Suppression de l'utilisateur
-            getEjbFacadeLocal().remove(this.user);
-            JsfUtil.addSuccessMessage(mbfe_rb.getString("UtilisateurDeleted"));
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, mbfe_rb.getString("PersistenceErrorOccured"));
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, mbfe_rb.getString("PersistenceErrorOccured"), e);
-        }
-    }
-	
+			// Suppression de l'utilisateur
+			getEjbFacadeLocal().remove(this.user);
+			JsfUtil.addSuccessMessage(mbfe_rb.getString("UtilisateurDeleted"));
+		} catch (Exception e) {
+			JsfUtil.addErrorMessage(e,
+					mbfe_rb.getString("PersistenceErrorOccured"));
+			Logger.getLogger(UserController.class.getName()).log(Level.SEVERE,
+					mbfe_rb.getString("PersistenceErrorOccured"), e);
+		}
+	}
+
 	public DataModel<Siteuser> getItems() {
-        if (items == null) {
-            Siteuser u = findConnectedUser();
-            if (u != null) {
-                List<Siteuser> uList = new ArrayList<Siteuser>();
-                
-                for (Iterator<Siteuser> it = ejbFacadeLocal.findAll().iterator(); it.hasNext();) {
-                    Siteuser utilisateur = it.next();
-                    if (utilisateur.has(u.getDroit(), Siteuser.INF) &&
-                            !utilisateur.is(u.getDroit()) ||
-                            u.is(RightsManager.getInstance().toLong(Access.ROOT))) {
-                        
-                        uList.add(utilisateur);
-                    }
-                }
-                
-                items = new ListDataModel<Siteuser>(uList);
-            } else {
-                items = new ListDataModel<Siteuser>();
-            }
-        }
-        
-        // Gestion des permaliens
-        FacesContext fc = FacesContext.getCurrentInstance();
-        HttpServletRequestWrapper req = (HttpServletRequestWrapper) fc.getExternalContext().getRequest();
-        String pseudoParam = req.getParameter("pseudo");
+		if (items == null) {
+			Siteuser u = findConnectedUser();
+			if (u != null) {
+				List<Siteuser> uList = new ArrayList<Siteuser>();
 
-        if (pseudoParam != null) {
-            int i = 0;
-            for (Iterator<Siteuser> it = items.iterator(); it.hasNext();) {
-                Siteuser utilisateur = it.next();
-                if (utilisateur.getLogin().equals(pseudoParam)) {
-                    items.setRowIndex(i);
-                    break;
-                }
-                i++;
-            }
-        }
-        
-        return items;
-    }
+				for (Iterator<Siteuser> it = ejbFacadeLocal.findAll()
+						.iterator(); it.hasNext();) {
+					Siteuser utilisateur = it.next();
+					if (utilisateur.has(u.getDroit(), Siteuser.INF)
+							&& !utilisateur.is(u.getDroit())
+							|| u.is(RightsManager.getInstance().toLong(
+									Access.ROOT))) {
 
-    public DataModel<Siteuser> getUserItems() {
-        if (userItems == null) {
-            ArrayList<Siteuser> userItemsList = new ArrayList<Siteuser>();
-            for (Siteuser u : getItems()) {
-                if (u.is(Global.getRightsManager().toLong(Access.USER))) {
-                    userItemsList.add(u);
-                }
-            }
-            userItems = new ListDataModel<Siteuser>(userItemsList);
-        }
-        return userItems;
-    }
-    
-    public void resetUserItems() {
-        userItems = null;
-    }
+						uList.add(utilisateur);
+					}
+				}
 
-    public SelectItem[] getItemsAvailableSelectMany() {
-        return JsfUtil.getSelectItems(ejbFacadeLocal.findAll(), false);
-    }
-
-    public SelectItem[] getItemsAvailableSelectOne() {
-        return JsfUtil.getSelectItems(ejbFacadeLocal.findAll(), true);
-    }
-
-    @Override
-    public void reinitialize() {
-        userItems = null;
-    }
-
-    @FacesConverter(forClass = Siteuser.class)
-    public static class UtilisateurControllerConverter implements Converter {
-
-        @Override
-        public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
-            if (value == null || value.length() == 0) {
-                return null;
-            }
-            UserController controller = (UserController) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "utilisateurController");
-            return controller.getEjbFacadeLocal().findById(getKey(value));
-        }
-
-        java.lang.Long getKey(String value) {
-            java.lang.Long key;
-            key = Long.valueOf(value);
-            return key;
-        }
-
-        String getStringKey(String string) {
-            StringBuilder sb = new StringBuilder();
-            sb.append(string);
-            return sb.toString();
-        }
-
-        @Override
-        public String getAsString(FacesContext facesContext, UIComponent component, Object object) {
-            if (object == null) {
-                return null;
-            }
-            if (object instanceof Siteuser) {
-                Siteuser o = (Siteuser) object;
-                return getStringKey(o.getLogin());
-            } else {
-                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + UserController.class.getName());
-            }
-        }
-    }
-    
-    public String connect() {
-        Siteuser tmp = userCo;
-        userCo = connection();
-        if (userCo != null) {
-            userCo.setPassword("connected");
-            saveUserCoSession();
-            
-            if (userCo.is(Global.getRightsManager().toLong(Access.USER))) {
-                return Nav.FApp.getDestination();
-            } else {
-                return Nav.FAppManage.getDestination();
-            }
-        } else {
-            userCo = tmp;
-            return null;
-        }
-    }
-    
-    private Siteuser connection() {
-        ResourceBundle err_rb = Bundle.Err.getBundle();
-        Siteuser u = null;
-        try {
-            u = ejbFacadeLocal.sOnePseudoPasswd(login, password);
-            u.setConnected(true);
-
-            login = null;
-            password = null;
-        } catch (EJBKException ex) {
-            JsfUtil.addErrorMessage(err_rb.getString("noResultException_co"));
-            
-            return u;
-        }
-        
-        try {
-			ejbFacadeLocal.edit(u);
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NotSupportedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SystemException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RollbackException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (HeuristicMixedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (HeuristicRollbackException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+				items = new ListDataModel<Siteuser>(uList);
+			} else {
+				items = new ListDataModel<Siteuser>();
+			}
 		}
-        return u;
-    }
-    
-    private void disconnect() {
-        Siteuser u = ejbFacadeLocal.findById(userCo.getLogin());
-        u.setConnected(false);
-        try {
-			ejbFacadeLocal.edit(u);
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NotSupportedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SystemException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RollbackException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (HeuristicMixedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (HeuristicRollbackException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+		// Gestion des permaliens
+		FacesContext fc = FacesContext.getCurrentInstance();
+		HttpServletRequestWrapper req = (HttpServletRequestWrapper) fc
+				.getExternalContext().getRequest();
+		String pseudoParam = req.getParameter("pseudo");
+
+		if (pseudoParam != null) {
+			int i = 0;
+			for (Iterator<Siteuser> it = items.iterator(); it.hasNext();) {
+				Siteuser utilisateur = it.next();
+				if (utilisateur.getLogin().equals(pseudoParam)) {
+					items.setRowIndex(i);
+					break;
+				}
+				i++;
+			}
 		}
-    }
-    
-    private void saveUserCoSession() {
-        Global.setSession(Session.UserCo, userCo);
-    }
-    
-    public String deconnect() {
-        Global.clearSessions();
-        disconnect();
-        userCo = new Siteuser();
-        userCo.setDroit(Global.getRightsManager().toLong(Access.GUEST));
-        userCo.setConnected(false);
-        saveUserCoSession();
-        return Nav.Co.getDestination();
-    }
-    
-    public boolean rightTo(String rigth) {
-        try {
-            RightID r = RightID.valueOf(rigth);
-            return getUserCo().has(Global.getRightsManager().toLong(r));
-        } catch (IllegalArgumentException ex) {
-            String message = "Error : IllegalArgumentException " + 
-                    "(RightID doesn't exists : '" + rigth + "')\n";
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, message);
-        }
-        
-        return false;
-    }
-    
-    public boolean accessTo(String access) {
-        try {
-            Access a = Access.valueOf(access);
-            return getUserCo().has(Global.getRightsManager().toLong(a));
-        } catch (IllegalArgumentException ex) {
-            String message = "Error : IllegalArgumentException " + 
-                    "(Access doesn't exists : '" + access + "')\n";
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, message);
-        }
-        
-        return false;
-    }
-    
-    public boolean accessOnlyTo(String access) {
-        try {
-            Access a = Access.valueOf(access);
-            return getUserCo().is(Global.getRightsManager().toLong(a));
-        } catch (IllegalArgumentException ex) {
-            String message = "Error : IllegalArgumentException " + 
-                    "(Access doesn't exists : '" + access + "')\n";
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, message);
-        }
-        
-        return false;
-    }
-    
-    public String showAccessForUser() {
-        String result = "";
-        Access[] accessfromrm = Global.getRightsManager()
-                .getAccess(getSelected().getDroit());
-        for (int a = 0; a < accessfromrm.length; a++) {
-            if (a == (accessfromrm.length-1)) {
-                result += accessfromrm[a].name();
-            } else {
-                result += accessfromrm[a].name() + ", ";
-            }
-        }
-        return result;
-    }
-    
-    public Siteuser findConnectedUser() {
-        if (getUserCo() != null && getUserCo().getLogin() != null) {
-            return ejbFacadeLocal.findById(getUserCo().getLogin());
-        }
-        return null;
-    }
-	
+
+		return items;
+	}
+
+	public DataModel<Siteuser> getUserItems() {
+		if (userItems == null) {
+			ArrayList<Siteuser> userItemsList = new ArrayList<Siteuser>();
+			for (Siteuser u : getItems()) {
+				if (u.is(Global.getRightsManager().toLong(Access.USER))) {
+					userItemsList.add(u);
+				}
+			}
+			userItems = new ListDataModel<Siteuser>(userItemsList);
+		}
+		return userItems;
+	}
+
+	public void resetUserItems() {
+		userItems = null;
+	}
+
+	public SelectItem[] getItemsAvailableSelectMany() {
+		return JsfUtil.getSelectItems(ejbFacadeLocal.findAll(), false);
+	}
+
+	public SelectItem[] getItemsAvailableSelectOne() {
+		return JsfUtil.getSelectItems(ejbFacadeLocal.findAll(), true);
+	}
+
+	@Override
+	public void reinitialize() {
+		userItems = null;
+	}
+
+	@FacesConverter(forClass = Siteuser.class)
+	public static class UtilisateurControllerConverter implements Converter {
+
+		@Override
+		public Object getAsObject(FacesContext facesContext,
+				UIComponent component, String value) {
+			if (value == null || value.length() == 0) {
+				return null;
+			}
+			UserController controller = (UserController) facesContext
+					.getApplication()
+					.getELResolver()
+					.getValue(facesContext.getELContext(), null,
+							"utilisateurController");
+			return controller.getEjbFacadeLocal().findById(getKey(value));
+		}
+
+		java.lang.Long getKey(String value) {
+			java.lang.Long key;
+			key = Long.valueOf(value);
+			return key;
+		}
+
+		String getStringKey(String string) {
+			StringBuilder sb = new StringBuilder();
+			sb.append(string);
+			return sb.toString();
+		}
+
+		@Override
+		public String getAsString(FacesContext facesContext,
+				UIComponent component, Object object) {
+			if (object == null) {
+				return null;
+			}
+			if (object instanceof Siteuser) {
+				Siteuser o = (Siteuser) object;
+				return getStringKey(o.getLogin());
+			} else {
+				throw new IllegalArgumentException("object " + object
+						+ " is of type " + object.getClass().getName()
+						+ "; expected type: " + UserController.class.getName());
+			}
+		}
+	}
+
+	public String connect() {
+		Siteuser tmp = userCo;
+		userCo = connection();
+		if (userCo != null) {
+			userCo.setPassword("connected");
+			saveUserCoSession();
+
+			if (userCo.is(Global.getRightsManager().toLong(Access.USER))) {
+				return Nav.FApp.getDestination();
+			} else {
+				return Nav.FAppManage.getDestination();
+			}
+		} else {
+			userCo = tmp;
+			return null;
+		}
+	}
+
+	private Siteuser connection() {
+		ResourceBundle err_rb = Bundle.Err.getBundle();
+		Siteuser u = null;
+		try {
+			u = ejbFacadeLocal.sOnePseudoPasswd(login, password);
+			u.setConnected(true);
+
+			login = null;
+			password = null;
+		} catch (EJBKException ex) {
+			JsfUtil.addErrorMessage(err_rb.getString("noResultException_co"));
+
+			return u;
+		}
+
+		ejbFacadeLocal.edit(u);
+		return u;
+	}
+
+	private void disconnect() {
+		Siteuser u = ejbFacadeLocal.findById(userCo.getLogin());
+		u.setConnected(false);
+		ejbFacadeLocal.edit(u);
+	}
+
+	private void saveUserCoSession() {
+		Global.setSession(Session.UserCo, userCo);
+	}
+
+	public String deconnect() {
+		Global.clearSessions();
+		disconnect();
+		userCo = new Siteuser();
+		userCo.setDroit(Global.getRightsManager().toLong(Access.GUEST));
+		userCo.setConnected(false);
+		saveUserCoSession();
+		return Nav.Co.getDestination();
+	}
+
+	public boolean rightTo(String rigth) {
+		try {
+			RightID r = RightID.valueOf(rigth);
+			return getUserCo().has(Global.getRightsManager().toLong(r));
+		} catch (IllegalArgumentException ex) {
+			String message = "Error : IllegalArgumentException "
+					+ "(RightID doesn't exists : '" + rigth + "')\n";
+			Logger.getLogger(UserController.class.getName()).log(Level.SEVERE,
+					message);
+		}
+
+		return false;
+	}
+
+	public boolean accessTo(String access) {
+		try {
+			Access a = Access.valueOf(access);
+			return getUserCo().has(Global.getRightsManager().toLong(a));
+		} catch (IllegalArgumentException ex) {
+			String message = "Error : IllegalArgumentException "
+					+ "(Access doesn't exists : '" + access + "')\n";
+			Logger.getLogger(UserController.class.getName()).log(Level.SEVERE,
+					message);
+		}
+
+		return false;
+	}
+
+	public boolean accessOnlyTo(String access) {
+		try {
+			Access a = Access.valueOf(access);
+			return getUserCo().is(Global.getRightsManager().toLong(a));
+		} catch (IllegalArgumentException ex) {
+			String message = "Error : IllegalArgumentException "
+					+ "(Access doesn't exists : '" + access + "')\n";
+			Logger.getLogger(UserController.class.getName()).log(Level.SEVERE,
+					message);
+		}
+
+		return false;
+	}
+
+	public String showAccessForUser() {
+		String result = "";
+		Access[] accessfromrm = Global.getRightsManager().getAccess(
+				getSelected().getDroit());
+		for (int a = 0; a < accessfromrm.length; a++) {
+			if (a == (accessfromrm.length - 1)) {
+				result += accessfromrm[a].name();
+			} else {
+				result += accessfromrm[a].name() + ", ";
+			}
+		}
+		return result;
+	}
+
+	public Siteuser findConnectedUser() {
+		if (getUserCo() != null && getUserCo().getLogin() != null) {
+			return ejbFacadeLocal.findById(getUserCo().getLogin());
+		}
+		return null;
+	}
+
 }

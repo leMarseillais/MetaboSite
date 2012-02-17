@@ -3,10 +3,8 @@ package src.services;
 import java.util.List;
 
 import javax.ejb.Stateless;
-import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.transaction.UserTransaction;
 
 /**
  * Session Bean implementation class AbstractFacade
@@ -14,16 +12,14 @@ import javax.transaction.UserTransaction;
  * @param <T>
  */
 @Stateless
-public abstract class AbstractUserFacade<T> implements
-		AbstractUserFacadeLocal<T> {
+public abstract class AbstractMetaboFacade<T> implements
+		AbstractMetaboFacadeLocal<T> {
 
 	private Class<T> entityClass;
 
 	protected abstract EntityManager getEntityManager();
 
-
-	
-	public AbstractUserFacade(Class<T> entityClass) {
+	public AbstractFacade(Class<T> entityClass) {
 		super();
 		this.entityClass = entityClass;
 	}
@@ -43,13 +39,19 @@ public abstract class AbstractUserFacade<T> implements
 	}
 
 	@Override
-	abstract public boolean create(T entity) ;
+	public void create(T entity) {
+		getEntityManager().persist(entity);
+	}
 
 	@Override
-	abstract public void edit(T entity) ;
+	public void edit(T entity) {
+		getEntityManager().merge(entity);
+	}
 
 	@Override
-	public abstract void remove(T entity);
+	public void remove(T entity) {
+		getEntityManager().remove(getEntityManager().merge(entity));
+	}
 
 	@Override
 	public Boolean exist(T entity) {

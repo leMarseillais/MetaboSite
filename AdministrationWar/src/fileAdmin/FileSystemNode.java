@@ -16,11 +16,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.tree.TreeNode;
-import javax.transaction.HeuristicMixedException;
-import javax.transaction.HeuristicRollbackException;
-import javax.transaction.NotSupportedException;
-import javax.transaction.RollbackException;
-import javax.transaction.SystemException;
 
 import src.EJBKException;
 import src.entities.Files;
@@ -31,8 +26,6 @@ import bean.util.Global;
 import com.google.common.collect.Iterators;
 
 import exception.EntityAlreadyExistsKException;
-
-
 
 public class FileSystemNode implements TreeNode {
 
@@ -115,7 +108,7 @@ public class FileSystemNode implements TreeNode {
 			for (File f : file.listFiles()) {
 				if (!f.isDirectory()) {
 					files.add(new FileSystemNode(f.getName(), this, ejbFacade,
-							 Type.FILE));
+							Type.FILE));
 				}
 			}
 		}
@@ -131,8 +124,7 @@ public class FileSystemNode implements TreeNode {
 	}
 
 	public FileSystemNode(String path, FileSystemNode parent,
-			FileFacadeLocal ejbFacade,
-			Type type) {
+			FileFacadeLocal ejbFacade, Type type) {
 
 		this.type = type.name();
 		this.path = path;
@@ -140,7 +132,6 @@ public class FileSystemNode implements TreeNode {
 		if (FileSystemNode.ejbFacade == null) {
 			FileSystemNode.ejbFacade = ejbFacade;
 		}
-		
 
 		childs = new ArrayList<FileSystemNode>();
 		if (path != null) {
@@ -180,29 +171,13 @@ public class FileSystemNode implements TreeNode {
 		}
 
 		if (ejbFacade.takenChemin(file.getAbsolutePath())) {
+
+			Files detailF;
 			try {
-				Files detailF = ejbFacade.sOneChemin(file.getAbsolutePath());
+				detailF = ejbFacade.sOneChemin(file.getAbsolutePath());
+
 				ejbFacade.remove(detailF);
-			} catch (EJBKException ex) {
-			} catch (SecurityException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalStateException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NotSupportedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SystemException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (RollbackException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (HeuristicMixedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (HeuristicRollbackException e) {
+			} catch (EJBKException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -219,11 +194,9 @@ public class FileSystemNode implements TreeNode {
 
 			FileSystemNode node = null;
 			if (kf.mime.equals("inode/directory")) {
-				node = new FileSystemNode(newPath, this, ejbFacade, 
-						Type.DIR);
+				node = new FileSystemNode(newPath, this, ejbFacade, Type.DIR);
 			} else {
-				node = new FileSystemNode(newPath, this, ejbFacade, 
-						Type.FILE);
+				node = new FileSystemNode(newPath, this, ejbFacade, Type.FILE);
 			}
 
 			Files detailsNode = new Files();
@@ -250,30 +223,9 @@ public class FileSystemNode implements TreeNode {
 			}
 
 			if (!ejbFacade.takenChemin(newPath)) {
-				try {
-					ejbFacade.create(detailsNode);
-				} catch (SecurityException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalStateException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (NotSupportedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (SystemException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (RollbackException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (HeuristicMixedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (HeuristicRollbackException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+
+				ejbFacade.create(detailsNode);
+
 			} else {
 				throw new EntityAlreadyExistsKException(
 						"Ce nom est déjà utilisé.");
@@ -290,60 +242,14 @@ public class FileSystemNode implements TreeNode {
 		if (i < childs.size() && i >= 0) {
 			FileSystemNode child = childs.get(i);
 
-			try {
-				ejbFacade.remove(child.getDetails());
-			} catch (SecurityException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalStateException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NotSupportedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SystemException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (RollbackException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (HeuristicMixedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (HeuristicRollbackException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			ejbFacade.remove(child.getDetails());
 			File file = new File(child.getPath());
 			deleteFile(file);
 		}
 	}
 
 	public void remove() {
-		try {
-			ejbFacade.remove(this.getDetails());
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NotSupportedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SystemException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RollbackException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (HeuristicMixedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (HeuristicRollbackException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		ejbFacade.remove(this.getDetails());
 		File file = new File(this.getPath());
 		deleteFile(file);
 	}

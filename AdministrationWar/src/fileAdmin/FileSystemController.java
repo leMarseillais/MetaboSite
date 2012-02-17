@@ -494,30 +494,8 @@ public class FileSystemController implements Serializable, Reinitialize {
 
 	public void changeDescListener() {
 		Files f = getFirstSelection().getDetails();
-		try {
-			fichierFacade.edit(f);
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NotSupportedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SystemException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RollbackException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (HeuristicMixedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (HeuristicRollbackException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		fichierFacade.edit(f);
+
 	}
 
 	private void removeUser(FileSystemNode node, Siteuser u, Long time) {
@@ -538,30 +516,8 @@ public class FileSystemController implements Serializable, Reinitialize {
 					Level.SEVERE, files_rb.getString("dropErrorNoFoundFile"));
 		}
 
-		try {
-			fichierFacade.edit(f);
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NotSupportedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SystemException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RollbackException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (HeuristicMixedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (HeuristicRollbackException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		fichierFacade.edit(f);
+
 	}
 
 	private FileSystemNode search(String path, FileSystemNode root) {

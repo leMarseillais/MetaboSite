@@ -1,4 +1,5 @@
 package src.services;
+
 import java.util.List;
 
 import javax.ejb.Local;
@@ -12,14 +13,14 @@ import javax.transaction.SystemException;
 public interface AbstractUserFacadeLocal<T> {
 
 	public List<T> findAll();
-		
-	public boolean create(T entity) throws NotSupportedException, SystemException, SecurityException, IllegalStateException, RollbackException, HeuristicMixedException, HeuristicRollbackException;
-	
-	public void edit(T entity) throws NotSupportedException, SystemException, SecurityException, IllegalStateException, RollbackException, HeuristicMixedException, HeuristicRollbackException;
-	
-	public void remove(T entity) throws NotSupportedException, SystemException, SecurityException, IllegalStateException, RollbackException, HeuristicMixedException, HeuristicRollbackException;
-	
+
+	public boolean create(T entity) ;
+
+	public void edit(T entity) ;
+
+	public void remove(T entity) ;
+
 	public T findById(Object id);
-	
+
 	public Boolean exist(T entity);
 }

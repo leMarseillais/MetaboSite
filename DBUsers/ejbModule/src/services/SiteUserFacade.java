@@ -6,6 +6,9 @@ import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -15,6 +18,7 @@ import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
+import javax.transaction.UserTransaction;
 
 import org.jboss.weld.bean.builtin.AbstractFacade;
 
@@ -33,12 +37,22 @@ public class SiteUserFacade extends AbstractUserFacade<Siteuser> implements
 	private EntityManager entityManager;
 
 	private static final Class<Siteuser> ENTITY_CLASS = Siteuser.class;
-
+	
+	private UserTransaction utx;
+	
 	/**
 	 * @see AbstractFacade#AbstractFacade()
 	 */
 	public SiteUserFacade() {
 		super(ENTITY_CLASS);
+		Context context;
+		try {
+			context = new InitialContext();
+			utx = (UserTransaction) context.lookup("java:comp/UserTransaction");
+		} catch (NamingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -126,62 +140,164 @@ public class SiteUserFacade extends AbstractUserFacade<Siteuser> implements
 	}
 
 	@Override
-	public boolean create(Siteuser entity) throws NotSupportedException, SystemException, SecurityException, IllegalStateException, RollbackException, HeuristicMixedException, HeuristicRollbackException {
+	public boolean create(Siteuser entity) {
 		Boolean work = false;
-
-		utx.begin();
-
-		Logger.getLogger(AbstractUserFacade.class.getName()).log(Level.INFO,
-				entity.toString());
-		if (entityManager.find(Siteuser.class, entity.getLogin()) == null) {
-			getEntityManager().persist(entity);
-			work = true;
+		Boolean test = true;
+		try {
+			utx.begin();
+			if (entityManager.find(Siteuser.class, entity.getLogin()) == null) {
+				getEntityManager().persist(entity);
+				work = true;
+			}
+			utx.commit();
+		} catch (NotSupportedException e) {
+			test = false;
+			e.printStackTrace();
+		} catch (SystemException e) {
+			test = false;
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			test = false;
+			e.printStackTrace();
+		} catch (IllegalStateException e) {
+			test = false;
+			e.printStackTrace();
+		} catch (RollbackException e) {
+			test = false;
+			e.printStackTrace();
+		} catch (HeuristicMixedException e) {
+			test = false;
+			e.printStackTrace();
+		} catch (HeuristicRollbackException e) {
+			test = false;
+			e.printStackTrace();
 		}
-		utx.commit();
+		if (!test) {
+			try {
+				utx.setRollbackOnly();
+			} catch (IllegalStateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SystemException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return work;
 	}
-	
-	@Override
-    public Siteuser sOnePseudo(String pseudo) throws EJBKException {
-        if (pseudo == null || pseudo.isEmpty()) {
-            return null;
-        } else {
-            Siteuser u = null;
-            
-            TypedQuery<Siteuser> tq = getEntityManager()
-                    .createNamedQuery("OnePseudo", Siteuser.class)
-                    .setParameter("pseudo", pseudo);
-            
-            try {
-                u = tq.getSingleResult();
-            } catch (NoResultException ex) {
-                throw new EJBKException(ex.getLocalizedMessage());
-            }
-            
-            return u;
-        }
-    }
 
 	@Override
-	public void edit(Siteuser entity) throws NotSupportedException,
-			SystemException, SecurityException, IllegalStateException,
-			RollbackException, HeuristicMixedException,
-			HeuristicRollbackException {
-		utx.begin();
-		getEntityManager().merge(entity);		
-		utx.commit();
-		
+	public Siteuser sOnePseudo(String pseudo) throws EJBKException {
+		if (pseudo == null || pseudo.isEmpty()) {
+			return null;
+		} else {
+			Siteuser u = null;
+
+			TypedQuery<Siteuser> tq = getEntityManager().createNamedQuery(
+					"OnePseudo", Siteuser.class).setParameter("pseudo", pseudo);
+
+			try {
+				u = tq.getSingleResult();
+			} catch (NoResultException ex) {
+				throw new EJBKException(ex.getLocalizedMessage());
+			}
+
+			return u;
+		}
 	}
 
 	@Override
-	public void remove(Siteuser entity) throws NotSupportedException,
-			SystemException, SecurityException, IllegalStateException,
-			RollbackException, HeuristicMixedException,
-			HeuristicRollbackException {
+	public void edit(Siteuser entity) {
+		Boolean test = true;
+		try {
+			utx.begin();
+			getEntityManager().merge(entity);
+			utx.commit();
+		} catch (NotSupportedException e) {
+			test = false;
+			e.printStackTrace();
+		} catch (SystemException e) {
+			test = false;
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			test = false;
+			e.printStackTrace();
+		} catch (IllegalStateException e) {
+			test = false;
+			e.printStackTrace();
+		} catch (RollbackException e) {
+			test = false;
+			e.printStackTrace();
+		} catch (HeuristicMixedException e) {
+			test = false;
+			e.printStackTrace();
+		} catch (HeuristicRollbackException e) {
+			test = false;
+			e.printStackTrace();
+		}
+		if (!test) {
+			try {
+				utx.setRollbackOnly();
+			} catch (IllegalStateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SystemException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	@Override
+	public void remove(Siteuser entity){
+		Boolean test = true;
+		try {
 		utx.begin();
 		getEntityManager().remove(getEntityManager().merge(entity));
 		utx.commit();
-		
+		} catch (NotSupportedException e) {
+			test = false;
+			e.printStackTrace();
+		} catch (SystemException e) {
+			test = false;
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			test = false;
+			e.printStackTrace();
+		} catch (IllegalStateException e) {
+			test = false;
+			e.printStackTrace();
+		} catch (RollbackException e) {
+			test = false;
+			e.printStackTrace();
+		} catch (HeuristicMixedException e) {
+			test = false;
+			e.printStackTrace();
+		} catch (HeuristicRollbackException e) {
+			test = false;
+			e.printStackTrace();
+		}
+		if (!test) {
+			try {
+				utx.setRollbackOnly();
+			} catch (IllegalStateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SystemException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

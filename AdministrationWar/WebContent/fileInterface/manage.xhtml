@@ -14,8 +14,8 @@
 		<ui:define name="title">#{UserI_RB.DossiersTitle}</ui:define>
 		<ui:define name="subtitle">#{UserI_RB.DossiersTitle}</ui:define>
 		<ui:define name="body">
-		
-		
+
+
 			<ror:messages ajaxRendered="true" globalOnly="true" />
 
 			<h:panelGrid columns="3" style="width: 100%;" id="files_panel">
@@ -60,13 +60,8 @@
 									onmouseout="if (#{ror:element('dirFile')}) #{ror:element('dirFile')}.style.display = 'none';">
 
 									<h:form>
-										<roa:outputPanel ajaxRendered="true">
-											<h:outputText value="#{item.shortPath}"
-												rendered="#{!item.details.isOPEN()}"
-												style="color: gray;font-style: italic;" />
-											<h:outputText value="#{item.shortPath}" style="color: green;"
-												rendered="#{item.details.isOPEN()}" />
-										</roa:outputPanel>
+										<h:outputText value="#{item.shortPath}" />
+
 
 										<roa:outputPanel id="dirFile" style="display: none;"
 											rendered="#{utilisateurController.accessTo('MANAGER')}">
@@ -106,13 +101,9 @@
 										<h:panelGrid columns="4"
 											columnClasses="noborder, noborder, noborder, noborder">
 
-											<roa:outputPanel ajaxRendered="true">
-												<h:outputText value="#{item.shortPath}"
-													rendered="#{!item.details.isOPEN()}"
-													style="color: gray;font-style: italic;" />
-												<h:outputText value="#{item.shortPath}"
-													style="color: green;" rendered="#{item.details.isOPEN()}" />
-											</roa:outputPanel>
+
+											<h:outputText value="#{item.shortPath}" />
+
 
 											<roa:outputPanel id="dirFileLeaf" style="display: none;"
 												rendered="#{utilisateurController.accessTo('MANAGER')}">
@@ -131,7 +122,7 @@
 					</h:form>
 				</ror:panel>
 				<h:panelGroup>
-					
+
 					<roa:outputPanel ajaxRendered="true">
 
 						<ror:panel
@@ -144,18 +135,18 @@
 							<roa:outputPanel ajaxRendered="true"
 								rendered="#{fileSystemController.firstSelection != null}">
 
-								<h:outputText value="#{Files_RB.author}"
+								<h:outputText value="#{Files_RB.siteuser}"
 									rendered="#{utilisateurController.accessTo('MANAGER')}" />
 								<h:outputText value=" "
 									rendered="#{utilisateurController.accessTo('MANAGER')}" />
 								<h:outputText
-									value="#{fileSystemController.firstSelection.details.auteur.prenom}"
+									value="#{fileSystemController.firstSelection.details.siteuser.login}"
 									style="text-decoration: underline"
 									rendered="#{utilisateurController.accessTo('MANAGER')}" />
 								<h:outputText value=" "
 									rendered="#{utilisateurController.accessTo('MANAGER')}" />
 								<h:outputText
-									value="#{fileSystemController.firstSelection.details.auteur.nom}"
+									value="#{fileSystemController.firstSelection.details.siteuser.login}"
 									style="text-decoration: underline"
 									rendered="#{utilisateurController.accessTo('MANAGER')}" />
 								<h:outputText value=", "
@@ -164,12 +155,7 @@
 									rendered="#{utilisateurController.accessTo('MANAGER')}" />
 								<h:outputText value=" "
 									rendered="#{utilisateurController.accessTo('MANAGER')}" />
-								<h:outputText
-									value="#{fileSystemController.firstSelection.details.dateChargement}"
-									style="font-style: italic"
-									rendered="#{utilisateurController.accessTo('MANAGER')}">
-									<f:convertDateTime />
-								</h:outputText>
+
 								<h:panelGroup
 									rendered="#{fileSystemController.firstSelection.type == 'FILE'}">
 									<br />
@@ -189,32 +175,11 @@
 									</h:outputLink>
 								</h:panelGroup>
 
-								<h:panelGroup
-									rendered="#{fileSystemController.firstSelection.details.isOPEN()}">
-									<br />
-									<br />
-									<h:form>
-										<roa:commandLink value="#{Files_RB.closeFile}"
-											render="files_panel"
-											action="#{fileSystemController.toggleState()}" />
-									</h:form>
-								</h:panelGroup>
 
-								<h:panelGroup
-									rendered="#{!fileSystemController.firstSelection.details.isOPEN()}">
-									<br />
-									<br />
-									<h:form>
-										<roa:commandLink value="#{Files_RB.openFile}"
-											render="files_panel"
-											action="#{fileSystemController.toggleState()}" />
-									</h:form>
-								</h:panelGroup>
 
 								<hr />
-			                    <h:graphicImage 
-			                    	style="float: right;"
-			                    	onclick="
+								<h:graphicImage style="float: right;"
+									onclick="
 				                    	var sdc = #{ror:element('sel_description_change')};
 				                    	var sd = #{ror:element('sel_description')};
 				                    	if (sdc.style.display == 'none') {
@@ -224,32 +189,30 @@
 			                            	sdc.style.display = 'none';
 			                            	sd.style.display = 'block';
 		                            	}"
-			                    	value="/resources/img/edit.png" />
-			                    <br />
+									value="/resources/img/edit.png" />
+								<br />
 								<roa:outputPanel id="sel_description">
-									<h:outputText
-										converter="brConverter"
-										escape="false"
-										value="#{fileSystemController.firstSelection.details.description}" />
+									<h:outputText converter="brConverter" escape="false"
+										value="#{fileSystemController.firstSelection.details.fileDescription}" />
 								</roa:outputPanel>
-			                       
+
 								<roa:outputPanel>
 
 									<h:form id="sel_description_change" style="display: none">
 										<h:inputTextarea id="sel_description_change_ta"
 											onblur="#{ror:element('sel_description_change')}.style.display = 'none';
 			                            		#{ror:element('sel_description')}.style.display = 'block'"
-											value="#{fileSystemController.firstSelection.details.description}">
+											value="#{fileSystemController.firstSelection.details.fileDescription}">
 
-											<roa:ajax event="blur" render="sel_description" 
+											<roa:ajax event="blur" render="sel_description"
 												listener="#{fileSystemController.changeDescListener()}" />
 										</h:inputTextarea>
 									</h:form>
-									
+
 								</roa:outputPanel>
-								
+
 								<hr />
-								
+
 							</roa:outputPanel>
 						</ror:panel>
 					</roa:outputPanel>
@@ -338,23 +301,24 @@
 							<roa:ajax event="uploadcomplete" execute="@none" render="files" />
 						</ror:fileUpload>
 						<roa:outputPanel ajaxRendered="true">
-						<ror:panel id="files" styleClass="info" rendered="#{fileSystemController.fichiersModel.rowCount > 0}">
-							<f:facet name="header">
-								<h:outputText
-									value="#{MBFE_RB.CreateFichierTitle_uploadedFiles}" />
-							</f:facet>
-							<ror:dataGrid id="dataGridFichiers" columns="1"
-								value="#{fileSystemController.fichiersModel}" var="fichier">
-								<h:panelGroup>
-									<h:form>
-										<ror:inplaceInput id="nom" value="#{fichier.name}">
-											<roa:ajax event="blur" execute="@form" limitRender="true" />
-										</ror:inplaceInput>
-										<br />
-										<roa:commandLink id="cLinkDesc" limitRender="true"
-											value="#{MBFE_RB.CreateFichierTitle_desc}" execute="@none"
-											render="@none"
-											onclick="
+							<ror:panel id="files" styleClass="info"
+								rendered="#{fileSystemController.fichiersModel.rowCount > 0}">
+								<f:facet name="header">
+									<h:outputText
+										value="#{MBFE_RB.CreateFichierTitle_uploadedFiles}" />
+								</f:facet>
+								<ror:dataGrid id="dataGridFichiers" columns="1"
+									value="#{fileSystemController.fichiersModel}" var="fichier">
+									<h:panelGroup>
+										<h:form>
+											<ror:inplaceInput id="nom" value="#{fichier.name}">
+												<roa:ajax event="blur" execute="@form" limitRender="true" />
+											</ror:inplaceInput>
+											<br />
+											<roa:commandLink id="cLinkDesc" limitRender="true"
+												value="#{MBFE_RB.CreateFichierTitle_desc}" execute="@none"
+												render="@none"
+												onclick="
 												var fd = #{ror:element('ficDesc')};
 												if (fd.style.display == 'none') {
 													fd.style.display = 'block';
@@ -364,22 +328,22 @@
 												}" />
                                             |
                                             <roa:commandLink
-											value="#{MBFE_RB.CreateFichierTitle_delete}"
-											actionListener="#{fileSystemController.deleteListener()}"
-											render="dataGridFichiers" />
-										<br />
-										<roa:outputPanel id="ficDesc" style="display: none;">
-											<h:outputLabel for="desc_fichier"
-												value="#{MBFE_RB.CreateFichierLabel_descfichier}" />
+												value="#{MBFE_RB.CreateFichierTitle_delete}"
+												actionListener="#{fileSystemController.deleteListener()}"
+												render="dataGridFichiers" />
 											<br />
-											<h:inputTextarea id="desc_fichier" value="#{fichier.desc}">
-												<roa:ajax event="blur" execute="@form" limitRender="true" />
-											</h:inputTextarea>
-										</roa:outputPanel>
-									</h:form>
-								</h:panelGroup>
-							</ror:dataGrid>
-						</ror:panel>
+											<roa:outputPanel id="ficDesc" style="display: none;">
+												<h:outputLabel for="desc_fichier"
+													value="#{MBFE_RB.CreateFichierLabel_descfichier}" />
+												<br />
+												<h:inputTextarea id="desc_fichier" value="#{fichier.desc}">
+													<roa:ajax event="blur" execute="@form" limitRender="true" />
+												</h:inputTextarea>
+											</roa:outputPanel>
+										</h:form>
+									</h:panelGroup>
+								</ror:dataGrid>
+							</ror:panel>
 						</roa:outputPanel>
 					</h:panelGrid>
 				</h:form>
