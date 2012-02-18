@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+	
+	<head>
+		<meta charset="UTF-8" />
+	</head>
+	<body>
+		<cc:interface name="file" displayName="File Chooser">
+			<cc:attribute name="value" required="true" />
+		</cc:interface>
+		
+		<cc:implementation>
+			<h:form>
+				<a4j:commandButton execute="@none" value="#{UI_RB.FILE_BUTTON_OPEN_POPUP}">
+					<rich:componentControl 
+						target="file_popup" 
+						operation="show" 
+						event="click" />
+				</a4j:commandButton>
+			</h:form>
+			
+			<rich:popupPanel id="file_popup" modal="true" resizeable="false"
+				moveable="false" autosized="false" minWidth="200" 
+				onmaskclick="#{rich:component('file_popup')}.hide(); return false;">
+
+				<!-- FILE POPUP CONTROL -->
+				<f:facet name="header">
+					<h:outputText value="#{UI_RB.FILE_POPUP_TITLE}" />
+				</f:facet>
+				<f:facet name="controls">
+					<h:outputLink value="#"
+						onclick="#{rich:component('file_popup')}.hide(); return false;">
+                            #{UI_RB.FILE_POPUP_CLOSE}
+					</h:outputLink>
+				</f:facet>
+				
+				<!-- FILE VISUALIZATION -->
+				<rich:messages ajaxRendered="true" globalOnly="true" />
+
+				<h:panelGrid columns="3" style="width: 100%;" id="files_panel">
+					<rich:panel style="min-width: 430px;">
+						<f:facet name="header">
+							<h:outputText value="#{Files_RB.treePanelHeader}" />
+						</f:facet>
+	
+						<h:form>
+							<a4j:commandButton value="#{Files_RB.addDir}"
+								rendered="#{utilisateurController.accessTo('MANAGER')}"
+								render="files_panel"
+								actionListener="#{fileSystemController.rootSelection()}">
+	
+								<rich:componentControl target="addDir" operation="show"
+									event="begin" />
+							</a4j:commandButton>
+						</h:form>
+						<a4j:outputPanel ajaxRendered="true">
+							<h:outputText rendered="#{fileSystemController.roots.isEmpty()}"
+								value="#{Files_RB.noDir}" />
+						</a4j:outputPanel>
+	
+						<h:form id="files_tree_form">
+							<rich:tree id="files_tree" selectionType="ajax"
+								selectionChangeListener="#{fileSystemController.selectionChanged}"
+								var="item" nodeType="#{item.type}">
+	
+								<a4j:ajax event="selectionchange" render="files_panel" />
+								<a4j:ajax event="click"
+									listener="#{fileSystemController.resetSelection()}"
+									render="files_panel" />
+	
+								<rich:treeModelRecursiveAdaptor
+									roots="#{fileSystemController.roots}"
+									nodes="#{item.directories}">
+									<rich:treeNode id="dirNode" type="DIR"
+										onclick="var n=#{rich:component('dirNode')};if (!n.isExpanded()) n.toggle()"
+										iconCollapsed="#{fileSystemController.dirIcon(item.isRoot())}"
+										iconExpanded="#{fileSystemController.dirIcon(item.isRoot())}"
+										onmouseover="if (#{rich:element('dirFile')}) #{rich:element('dirFile')}.style.display = 'inline';"
+										onmouseout="if (#{rich:element('dirFile')}) #{rich:element('dirFile')}.style.display = 'none';">
+	
+										<h:form>
+											<h:outputText value="#{item.shortPath}" />
+	
+	
+											<a4j:outputPanel id="dirFile" style="display: none;"
+												rendered="#{utilisateurController.accessTo('MANAGER')}">
+	
+												<h:outputText value=" [ " />
+												<a4j:commandLink value="#{Files_RB.addDirLink}"
+													actionListener="#{fileSystemController.resetSelection()}">
+	
+													<rich:componentControl target="addDir" operation="show"
+														event="begin" />
+												</a4j:commandLink>
+												<h:outputText value=" | " />
+												<a4j:commandLink value="#{Files_RB.addFilesLink}"
+													actionListener="#{fileSystemController.resetSelection()}">
+	
+													<rich:componentControl target="addFile" operation="show"
+														event="begin" />
+												</a4j:commandLink>
+												<h:outputText value=" | " />
+												<a4j:commandLink value="#{Files_RB.rmFilesLink}"
+													actionListener="#{fileSystemController.resetSelection()}">
+	
+													<rich:componentControl target="rmDir" operation="show"
+														event="begin" />
+												</a4j:commandLink>
+												<h:outputText value=" ] " />
+											</a4j:outputPanel>
+										</h:form>
+									</rich:treeNode>
+	
+									<rich:treeNode type="FILE" expanded="#{true}"
+										iconExpanded="#{fileSystemController.iconLeaf(item)}"
+										onmouseover="if (#{rich:element('dirFileLeaf')}) #{rich:element('dirFileLeaf')}.style.display = 'inline';"
+										onmouseout="if (#{rich:element('dirFileLeaf')}) #{rich:element('dirFileLeaf')}.style.display = 'none';">
+	
+										<h:form>
+											<h:panelGrid columns="4"
+												columnClasses="noborder, noborder, noborder, noborder">
+	
+	
+												<h:outputText value="#{item.shortPath}" />
+	
+	
+												<a4j:outputPanel id="dirFileLeaf" style="display: none;"
+													rendered="#{utilisateurController.accessTo('MANAGER')}">
+	
+													<a4j:commandLink value=" × " style="text-decoration: none;"
+														actionListener="#{fileSystemController.resetSelection()}">
+														<rich:componentControl target="rmDir" operation="show"
+															event="begin" />
+													</a4j:commandLink>
+												</a4j:outputPanel>
+											</h:panelGrid>
+										</h:form>
+									</rich:treeNode>
+								</rich:treeModelRecursiveAdaptor>
+							</rich:tree>
+						</h:form>
+					</rich:panel>
+					<h:panelGroup>
+	
+						<a4j:outputPanel ajaxRendered="true">
+	
+							<rich:panel
+								rendered="#{fileSystemController.existsOldSelection() and
+											 fileSystemController.firstSelection.appPath.length() > 0}">
+								<f:facet name="header">
+									<h:outputText
+										value="#{Files_RB.nodeDetailsPanelHeader} - « #{fileSystemController.firstSelection.shortPath} »" />
+								</f:facet>
+								<a4j:outputPanel ajaxRendered="true"
+									rendered="#{fileSystemController.firstSelection != null}">
+	
+									<h:outputText value="#{Files_RB.siteuser}"
+										rendered="#{utilisateurController.accessTo('MANAGER')}" />
+									<h:outputText value=" "
+										rendered="#{utilisateurController.accessTo('MANAGER')}" />
+									<h:outputText
+										value="#{fileSystemController.firstSelection.details.siteuser.login}"
+										style="text-decoration: underline"
+										rendered="#{utilisateurController.accessTo('MANAGER')}" />
+									<h:outputText value=" "
+										rendered="#{utilisateurController.accessTo('MANAGER')}" />
+									<h:outputText
+										value="#{fileSystemController.firstSelection.details.siteuser.login}"
+										style="text-decoration: underline"
+										rendered="#{utilisateurController.accessTo('MANAGER')}" />
+									<h:outputText value=", "
+										rendered="#{utilisateurController.accessTo('MANAGER')}" />
+									<h:outputText value="#{Files_RB.date}"
+										rendered="#{utilisateurController.accessTo('MANAGER')}" />
+									<h:outputText value=" "
+										rendered="#{utilisateurController.accessTo('MANAGER')}" />
+	
+									<h:panelGroup
+										rendered="#{fileSystemController.firstSelection.type == 'FILE'}">
+										<br />
+										<br />
+										<h:outputText value="#{Files_RB.sizeOfFile} " />
+										<h:outputText
+											value="#{fileSystemController.firstSelection.size}" />
+									</h:panelGroup>
+	
+									<h:panelGroup
+										rendered="#{fileSystemController.firstSelection.type == 'FILE'}">
+										<br />
+										<h:outputLink value="#{global.contextRoot()}/dl">
+											<f:param name="id"
+												value="#{fileSystemController.firstSelection.details.fileLocation}" />
+											<h:outputText value="#{Files_RB.download}" />
+										</h:outputLink>
+									</h:panelGroup>
+	
+	
+	
+									<hr />
+									<h:graphicImage style="float: right;"
+										onclick="
+					                    	var sdc = #{rich:element('sel_description_change')};
+					                    	var sd = #{rich:element('sel_description')};
+					                    	if (sdc.style.display == 'none') {
+						                    	sdc.style.display = 'block';
+				                            	sd.style.display = 'none'
+			                            	} else {
+				                            	sdc.style.display = 'none';
+				                            	sd.style.display = 'block';
+			                            	}"
+										value="/resources/img/edit.png" />
+									<br />
+									<a4j:outputPanel id="sel_description">
+										<h:outputText converter="brConverter" escape="false"
+											value="#{fileSystemController.firstSelection.details.fileDescription}" />
+									</a4j:outputPanel>
+	
+									<a4j:outputPanel>
+	
+										<h:form id="sel_description_change" style="display: none">
+											<h:inputTextarea id="sel_description_change_ta"
+												onblur="#{rich:element('sel_description_change')}.style.display = 'none';
+				                            		#{rich:element('sel_description')}.style.display = 'block'"
+												value="#{fileSystemController.firstSelection.details.fileDescription}">
+	
+												<a4j:ajax event="blur" render="sel_description"
+													listener="#{fileSystemController.changeDescListener()}" />
+											</h:inputTextarea>
+										</h:form>
+	
+									</a4j:outputPanel>
+	
+									<hr />
+	
+								</a4j:outputPanel>
+							</rich:panel>
+						</a4j:outputPanel>
+					</h:panelGroup>
+				</h:panelGrid>
+				
+			</rich:popupPanel>
+		</cc:implementation>
+	</body>
+</html>

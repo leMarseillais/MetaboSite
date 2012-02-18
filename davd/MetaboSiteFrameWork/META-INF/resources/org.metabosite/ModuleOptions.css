@@ -1,0 +1,12 @@
+#ModuleOptions {
+}
+
+.optionKey {
+	text-transform: capitalize;
+}
+
+.optionValue {
+	position: absolute;
+	right: 5px;
+	font-style: italic;
+}
