@@ -13,5 +13,13 @@
 			<base-name>org.metabosite.module.bundles.MODULE</base-name>
 			<var>MODULE_RB</var>
 		</resource-bundle>
+        <resource-bundle>
+			<base-name>org.metabosite.module.bundles.UI</base-name>
+			<var>UI_RB</var>
+		</resource-bundle>
+		<resource-bundle>
+			<base-name>org.metabosite.module.bundles.FILE</base-name>
+			<var>FILE_RB</var>
+		</resource-bundle>
 	</application>
 </faces-config>

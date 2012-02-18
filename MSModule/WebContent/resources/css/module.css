@@ -1,5 +1,7 @@
 html, body {
+	margin: 0;
 	height: 100%;
+	background: black;
 }
 #content {
     width: 1000px;
@@ -10,15 +12,10 @@ html, body {
 #left {
 	float: left;
 	width: 200px;
-	background: blue;
 	position: relative;
 	padding: 5px;
-	background: #a90329; /* Old browsers */
-	background: -moz-linear-gradient(top,  #a90329 0%, #8f0222 44%, #6d0019 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#a90329), color-stop(44%,#8f0222), color-stop(100%,#6d0019)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  #a90329 0%,#8f0222 44%,#6d0019 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  #a90329 0%,#8f0222 44%,#6d0019 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  #a90329 0%,#8f0222 44%,#6d0019 100%); /* IE10+ */
-	background: linear-gradient(top,  #a90329 0%,#8f0222 44%,#6d0019 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a90329', endColorstr='#6d0019',GradientType=0 ); /* IE6-9 */
+	-webkit-box-shadow: 0px 0px 1px 1px rgba(255, 255, 255, 1);
+	-moz-box-shadow: 0px 0px 1px 1px rgba(255, 255, 255, 1);
+	box-shadow: 0px 0px 1px 1px rgba(255, 255, 255, 1);
+	color: white; 
 }

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <buildpath>
-	<buildpathentry kind="src" path=""/>
-	<buildpathentry kind="con" path="org.eclipse.php.core.LANGUAGE"/>
+	<buildpathentry kind="src" path="src"/>
+	<buildpathentry kind="con" path="org.eclipse.dltk.mod.launching.INTERPRETER_CONTAINER"/>
+	<buildpathentry kind="con" path="org.ebayopensource.vjet.eclipse.core.SDK_CONTAINER/DEFUALT_SDK"/>
+	<buildpathentry external="true" kind="lib" path="/Users/sebastienbeauquis/Documents/cours/projet génie log/lib/jsbml"/>
+	<buildpathentry external="true" kind="lib" path="/Users/sebastienbeauquis/Documents/lib_metabosite/jar/richfaces-components-ui-4.1.0.Final.jar"/>
+	<buildpathentry external="true" kind="lib" path="/Users/sebastienbeauquis/Documents/lib_metabosite/jar/richfaces-core-impl-4.1.0.Final.jar"/>
+	<buildpathentry external="true" kind="lib" path="/Users/sebastienbeauquis/Downloads/glassfish.jar/glassfishv3/glassfish/modules/jsf-impl.jar"/>
 </buildpath>

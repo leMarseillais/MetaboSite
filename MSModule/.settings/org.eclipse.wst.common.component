@@ -3,6 +3,9 @@
     <wb-module deploy-name="MSModule">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <dependent-module archiveName="jsbml.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jsbml/jsbml">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="MSModule"/>
         <property name="java-output-path" value="/MSModule/build/classes"/>
     </wb-module>

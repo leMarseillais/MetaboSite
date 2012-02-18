@@ -12,7 +12,7 @@ import com.apple.concurrent.Dispatch.Priority;
 public class TaskManager {
     private static Logger LOGGER = Logger.getLogger(TaskManager.class.getName());
     private ExecutorService taskExecutor;
-    private static TaskManager instance;
+    private static TaskManager instance=null;
     private static HashMap< String, HashMap< Task, TaskLauncher>> taskList;
 
     public static synchronized TaskManager getInstance() {

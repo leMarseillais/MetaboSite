@@ -76,5 +76,13 @@
 			<base-name>org.metabosite.bundles.UI</base-name>
 			<var>UI_RB</var>
 		</resource-bundle>
+			<resource-bundle>
+		<base-name>bundles.File</base-name>
+		<var>File</var>
+	</resource-bundle>
+	<resource-bundle>
+		<base-name>bundles.Err</base-name>
+		<var>Err</var>
+	</resource-bundle>
 	</application>
 </faces-config>
