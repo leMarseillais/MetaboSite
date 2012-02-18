@@ -4,11 +4,10 @@
  */
 package org.metabosite.utils;
 
-import org.metabosite.utils.Global;
 import java.util.ResourceBundle;
 
 public enum Bundle {
-    UI("UI");
+    UI("UI"), Err("Errors"),Files("File");
 
     private ResourceBundle bundle;
     private String name;
