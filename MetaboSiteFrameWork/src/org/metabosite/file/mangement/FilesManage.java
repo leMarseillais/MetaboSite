@@ -17,23 +17,25 @@ import src.services.FileFacadeLocal;
 
 public class FilesManage {
 
-		private Files fileEntiti;
-		private File file;
 		
 		@EJB
 		private volatile static FileFacadeLocal ejbFacade;
 		
-		public FilesManage(String fileDescription, String mime,
-				String extention, Siteuser siteuser,String modulename,String file) {
+		public FilesManage() {
+			
+		}
+		
+		public void saveFile(String fileDescription, String mime,
+				String extention, Siteuser siteuser,String modulename,String stringFile){
 			String fileName = modulename+"_"+Global.currentTime()+"."+extention;
 			String fileLocation=Bundle.Files.getBundle().getString("Location")+"/"+fileName;
 			Long creationDate=Global.currentTime();
 			Long modifDate=Global.currentTime();
-			fileEntiti=new Files(fileLocation, creationDate, modifDate, fileName, fileDescription, mime, extention, siteuser);
-			this.file=new File(fileLocation);
+			Files fileEntiti=new Files(fileLocation, creationDate, modifDate, fileName, fileDescription, mime, extention, siteuser);
+			File file=new File(fileLocation);
 			try {
-				FileOutputStream fileOutputStream =new FileOutputStream(this.file);
-				fileOutputStream.write(file.getBytes());
+				FileOutputStream fileOutputStream =new FileOutputStream(file);
+				fileOutputStream.write(stringFile.getBytes());
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -41,9 +43,6 @@ public class FilesManage {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
-		
-		public void saveFile(){
 			ejbFacade.create(fileEntiti);
 		}
 		

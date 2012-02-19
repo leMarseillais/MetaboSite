@@ -18,6 +18,7 @@ import org.metabosite.module.controllers.user.security.Page;
 import org.metabosite.module.controllers.user.security.RightsManager;
 import org.metabosite.module.utils.Bundle;
 
+import src.entities.Siteuser;
 
 @ManagedBean(name = "global")
 @ApplicationScoped
@@ -148,5 +149,12 @@ public class Global {
 			Reinitialize rUC = (Reinitialize) uC;
 			rUC.reinitialize();
 		}
+	}
+
+	public static Siteuser getUser() {
+
+		UserController userController = (UserController) getSession(Session.Users);
+		return userController.getUserCo();
+
 	}
 }

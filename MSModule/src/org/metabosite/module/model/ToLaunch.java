@@ -20,8 +20,9 @@ import src.entities.Siteuser;
 
 public class ToLaunch implements Task {
 
-	File fileIn;
-	Siteuser siteuser;
+	private File fileIn;
+	private Siteuser siteuser;
+	private String fileout;
 	
 	public ToLaunch(File in,Siteuser siteuser) {
 		this.fileIn=in;
@@ -35,9 +36,9 @@ public class ToLaunch implements Task {
 			SBMLDocument sbmlDocument=reader.readSBML(fileIn.getPath());
 			JSBMLvisualiser jvi= new JSBMLvisualiser(sbmlDocument);
 			Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Parssage du sbml");
-			FilesManage filesManage = new FilesManage("Javascript code for pathway visualisation", "js", ".js", siteuser, "Visu", "");
-			File fileOut= new File("toto");
-			jvi.write(fileOut);
+			FilesManage filesManage = new FilesManage();
+			this.fileout=jvi.write();
+			filesManage.saveFile("Javascript code for pathway visualisation", "js", ".js", siteuser, "Visu", this.fileout);
 			Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Žcriture du JS");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -51,5 +52,11 @@ public class ToLaunch implements Task {
 		}
 
 	}
+
+	public String getFileout() {
+		return fileout;
+	}
+	
+	
 
 }

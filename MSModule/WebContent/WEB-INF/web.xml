@@ -6,6 +6,7 @@
 	
 	<display-name>MSModule</display-name>
 	
+	
 	<context-param>
 		<param-name>javax.faces.PROJECT_STAGE</param-name>
 		<param-value>Development</param-value>
@@ -66,6 +67,15 @@
 		<param-value>true</param-value>
 	</context-param>
 
+	<filter>
+		<filter-name>AccessFilter</filter-name>
+		<filter-class>filter.AccessFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>AccessFilter</filter-name>
+		<url-pattern>/faces/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
 	<servlet>
 		<servlet-name>Faces Servlet</servlet-name>
 		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>

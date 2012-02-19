@@ -14,6 +14,7 @@ import org.metabosite.model.ItemList;
 import org.metabosite.model.OptionList;
 import org.metabosite.model.StringOption;
 import org.metabosite.module.model.ToLaunch;
+import org.metabosite.module.utils.Global;
 import org.metabosite.task.management.TaskManager;
 
 import src.entities.Siteuser;
@@ -27,6 +28,8 @@ public class Module implements Serializable {
 	
 	private OptionList mesOptions;
 	private ItemList menuItems;
+	private File fileToUse=new File("/Users/sebastienbeauquis/Documents/cours/projet génie log/GitRepo/MSModule/src/ath00010.xml");
+	private String fileOut;
 	@EJB
 	private SiteUserFacadeLocal ejbFacadeLocal;
 	
@@ -58,13 +61,23 @@ public class Module implements Serializable {
 	public Module() {
 	}
 	
-	public void calcul(File file){
-		Siteuser siteuser=ejbFacadeLocal.findById("ghf");
-		ToLaunch launcher= new ToLaunch(file,siteuser);
+	public void calcul(){
+		Siteuser siteuser= Global.getUser();
+		ToLaunch launcher= new ToLaunch(fileToUse,siteuser);
 		TaskManager taskManager=TaskManager.getInstance();
-		taskManager.addTask(launcher, "ghf");
+		taskManager.addTask(launcher, siteuser.getLogin());
 		Logger.getLogger(this.getClass().getName()).log(Level.INFO, "passage dans la méthode calcul");
-		System.out.println("passage dans la méthode calcul");
+		this.fileOut=launcher.getFileout();
 	}
+
+	public String getFileOut() {
+		return fileOut;
+	}
+
+	public void setFileOut(String fileOut) {
+		this.fileOut = fileOut;
+	}
+	
+	
 	
 }

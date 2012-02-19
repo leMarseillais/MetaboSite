@@ -138,37 +138,36 @@ public class JSBMLvisualiser extends Reaction {
 		
 	}
 
-	public void write(File file) throws IOException, XMLStreamException{
-		FileWriter fw= new FileWriter(file);
-		PrintWriter pw = new PrintWriter(fw);
+	public String write() throws IOException, XMLStreamException{
+		String file="";
 		
 			
-			pw.write("var labelType, useGradients, nativeTextSupport, animate;\r\n");
-			pw.write("(function() { \r\n");
-			pw.write("var ua = navigator.userAgent, \r\n");
-			pw.write("iStuff = ua.match(/iPhone/i) || ua.match(/iPad/i),\r\n");
-			pw.write("typeOfCanvas = typeof HTMLCanvasElement,\r\n");
-			pw.write("nativeCanvasSupport = (typeOfCanvas == 'object' || typeOfCanvas == 'function'),\r\n");
-			pw.write("textSupport = nativeCanvasSupport \r\n ");
-			pw.write(" && (typeof document.createElement('canvas').getContext('2d').fillText == 'function'); \r\n");
+			file+=("var labelType, useGradients, nativeTextSupport, animate;\r\n");
+			file+=("(function() { \r\n");
+			file+=("var ua = navigator.userAgent, \r\n");
+			file+=("iStuff = ua.match(/iPhone/i) || ua.match(/iPad/i),\r\n");
+			file+=("typeOfCanvas = typeof HTMLCanvasElement,\r\n");
+			file+=("nativeCanvasSupport = (typeOfCanvas == 'object' || typeOfCanvas == 'function'),\r\n");
+			file+=("textSupport = nativeCanvasSupport \r\n ");
+			file+=(" && (typeof document.createElement('canvas').getContext('2d').fillText == 'function'); \r\n");
   //I'm setting this based on the fact that ExCanvas provides text support for IE
   //and that as of today iPhone/iPad current text support is lame
-			pw.write("labelType = (!nativeCanvasSupport || (textSupport && !iStuff))? 'Native' : 'HTML';\r\n");
-			pw.write("nativeTextSupport = labelType == 'Native'; \r\n");
-			pw.write("useGradients = nativeCanvasSupport;");
-			pw.write("animate = !(iStuff || !nativeCanvasSupport); \r\n");
-			pw.write("})();\r\n");
-			pw.write("var Log = {\r\n");
-			pw.write("elem: false, \r\n");
-		    pw.write("write: function(text){ \r\n");
-		    pw.write("if (!this.elem)  \r\n");
-		    pw.write("this.elem = document.getElementById('log'); \r\n");
-		    pw.write("this.elem.innerHTML = text; \r\n");
-		    pw.write("this.elem.style.left = (500 - this.elem.offsetWidth / 2) + 'px'; \r\n");
-		    pw.write("} \r\n");
-		    pw.write("}; \r\n");
-		    pw.write("function init(){ \r\n");
-		    pw.write(" var json = [ \r\n");
+			file+=("labelType = (!nativeCanvasSupport || (textSupport && !iStuff))? 'Native' : 'HTML';\r\n");
+			file+=("nativeTextSupport = labelType == 'Native'; \r\n");
+			file+=("useGradients = nativeCanvasSupport;");
+			file+=("animate = !(iStuff || !nativeCanvasSupport); \r\n");
+			file+=("})();\r\n");
+			file+=("var Log = {\r\n");
+			file+=("elem: false, \r\n");
+		    file+=("write: function(text){ \r\n");
+		    file+=("if (!this.elem)  \r\n");
+		    file+=("this.elem = document.getElementById('log'); \r\n");
+		    file+=("this.elem.innerHTML = text; \r\n");
+		    file+=("this.elem.style.left = (500 - this.elem.offsetWidth / 2) + 'px'; \r\n");
+		    file+=("} \r\n");
+		    file+=("}; \r\n");
+		    file+=("function init(){ \r\n");
+		    file+=(" var json = [ \r\n");
 		    
 		    for (Iterator iter = this.reactions.keySet().iterator(); iter.hasNext();) {
 				Reaction key = (Reaction) iter.next();
@@ -183,85 +182,85 @@ public class JSBMLvisualiser extends Reaction {
 					enz +=" & "+(String) enzy.get(i);
 									
 				}
-				pw.write("{\r\n ");
-				pw.write("'adjacencies': [ \r\n ");
+				file+=("{\r\n ");
+				file+=("'adjacencies': [ \r\n ");
 				for (int i=0; i<reac.size();i++){
-					pw.write("{ \r\n");
-					pw.write("'nodeTo':"+"'"+reac.get(i)+ "', \r\n");
-					pw.write("'nodeFrom':"+"'" + enz +"', \r\n");
-					pw.write("'data':{} \r\n");
-					pw.write("}, \r\n");
+					file+=("{ \r\n");
+					file+=("'nodeTo':"+"'"+reac.get(i)+ "', \r\n");
+					file+=("'nodeFrom':"+"'" + enz +"', \r\n");
+					file+=("'data':{} \r\n");
+					file+=("}, \r\n");
 
 				}
 				
-				pw.write("], \r\n");
-				pw.write("'data': { \r\n");
-				pw.write("'$color': '#C74243', ");
-				pw.write("'$type': 'triangle', \r\n");
-				pw.write( " '$dim': 15 \r\n");
-				pw.write("}, \r\n");
+				file+=("], \r\n");
+				file+=("'data': { \r\n");
+				file+=("'$color': '#C74243', ");
+				file+=("'$type': 'triangle', \r\n");
+				file+=( " '$dim': 15 \r\n");
+				file+=("}, \r\n");
 				System.out.println(enz);
 				System.out.println("+++++++++");
-				pw.write("'id': "+"'"+enz+"',\r\n");
-				pw.write( "'name': "+"'"+enz+"'\r\n");
-				pw.write("},\r\n"); 
+				file+=("'id': "+"'"+enz+"',\r\n");
+				file+=( "'name': "+"'"+enz+"'\r\n");
+				file+=("},\r\n"); 
 				
 				/************************************/
 				for (int i=0;i<reac.size();i++){
-					pw.write("{\r\n ");
-					pw.write("'adjacencies': [ ], \r\n ");
-					//pw.write(  "'"+enz+"'\r\n");
+					file+=("{\r\n ");
+					file+=("'adjacencies': [ ], \r\n ");
+					//file+=(  "'"+enz+"'\r\n");
 					//LISTE VIDE 				
-					//pw.write("], ");
-					pw.write("'data': { \r\n");
-					pw.write("'$color': '#416D9C', ");
-					pw.write("'$type': 'square', \r\n");
-					pw.write( " '$dim': 15 \r\n");
-					pw.write("}, \r\n");
-					pw.write("'id': "+"'"+reac.get(i)+"',\r\n");
-					pw.write( "'name': "+"'"+reac.get(i)+"'\r\n");
-					pw.write("},\r\n");
+					//file+=("], ");
+					file+=("'data': { \r\n");
+					file+=("'$color': '#416D9C', ");
+					file+=("'$type': 'square', \r\n");
+					file+=( " '$dim': 15 \r\n");
+					file+=("}, \r\n");
+					file+=("'id': "+"'"+reac.get(i)+"',\r\n");
+					file+=( "'name': "+"'"+reac.get(i)+"'\r\n");
+					file+=("},\r\n");
 									
 				}
 				
 				
 				
 				/////////////////////////////////////////
-				pw.write("{\r\n ");
-				pw.write("'adjacencies': [ \r\n ");
+				file+=("{\r\n ");
+				file+=("'adjacencies': [ \r\n ");
 				for (int i=0; i<prod.size();i++){
-					pw.write("{ \r\n");
-					pw.write("'nodeTo':"+"'"+ prod.get(i)+ "', \r\n");
-					pw.write("'nodeFrom' :"+"'" + enz +"', \r\n");
-					pw.write("'data':{} \r\n");
-					pw.write("},\r\n");
+					file+=("{ \r\n");
+					file+=("'nodeTo':"+"'"+ prod.get(i)+ "', \r\n");
+					file+=("'nodeFrom' :"+"'" + enz +"', \r\n");
+					file+=("'data':{} \r\n");
+					file+=("},\r\n");
 				}
-				pw.write("], \r\n");
-				pw.write("'data': { \r\n");
-				pw.write("'$color': '#C74243', ");
-				pw.write("'$type': 'triangle', \r\n");
-				pw.write( " '$dim': 15 \r\n");
-				pw.write("}, \r\n");
+				file+=("], \r\n");
+				file+=("'data': { \r\n");
+				file+=("'$color': '#C74243', ");
+				file+=("'$type': 'triangle', \r\n");
+				file+=( " '$dim': 15 \r\n");
+				file+=("}, \r\n");
 				
-				pw.write("'id': "+"'"+enz+"',\r\n");
-				pw.write( "'name': "+"'"+enz+"'\r\n");
-				pw.write("},\r\n"); 
+				file+=("'id': "+"'"+enz+"',\r\n");
+				file+=( "'name': "+"'"+enz+"'\r\n");
+				file+=("},\r\n"); 
 				
 				
 				/************************************/
 				for (int i=0;i<prod.size();i++){
-					pw.write("{\r\n ");
-					pw.write("'adjacencies': [ ], \r\n ");
-					//pw.write(  "'"+enz+"'\r\n");				
-					//pw.write("], \r\n");
-					pw.write("'data': { \r\n");
-					pw.write("'$color': '#416D9C', ");
-					pw.write("'$type': 'square', \r\n");
-					pw.write( " '$dim': 15 \r\n");
-					pw.write("}, \r\n");
-					pw.write("'id': "+"'"+prod.get(i)+"',\r\n");
-					pw.write( "'name': "+"'"+prod.get(i)+"'\r\n");
-					pw.write("},\r\n");
+					file+=("{\r\n ");
+					file+=("'adjacencies': [ ], \r\n ");
+					//file+=(  "'"+enz+"'\r\n");				
+					//file+=("], \r\n");
+					file+=("'data': { \r\n");
+					file+=("'$color': '#416D9C', ");
+					file+=("'$type': 'square', \r\n");
+					file+=( " '$dim': 15 \r\n");
+					file+=("}, \r\n");
+					file+=("'id': "+"'"+prod.get(i)+"',\r\n");
+					file+=( "'name': "+"'"+prod.get(i)+"'\r\n");
+					file+=("},\r\n");
 									
 				}
 				
@@ -272,126 +271,125 @@ public class JSBMLvisualiser extends Reaction {
 		    
 		    
 		    
-		    pw.write("  ];\r\n");
-		    pw.write("var fd = new $jit.ForceDirected({\r\n");
-		    pw.write("injectInto: 'infovis',\r\n");
-		    pw.write("Navigation: {\r\n");
-		    pw.write("enable: true,\r\n");
-		    pw.write("panning: 'avoid nodes',\r\n");
-		    pw.write("zooming: 10 \r\n");//zoom speed. higher is more sensible
-		    pw.write("  },\r\n");
-		    pw.write("Node: {\r\n");
-		    pw.write("overridable: true\r\n");
-		    pw.write("},\r\n");
-		    pw.write("Edge: {\r\n");
-		    pw.write("overridable: true,\r\n");
-		    pw.write("color: '#23A4FF',\r\n");
-		    pw.write("lineWidth: 0.4\r\n");
-		    pw.write("},\r\n");
-		    pw.write("Label: {\r\n");
-		    pw.write("type: labelType,\r\n"); //Native or HTML
-		    pw.write(" size: 10,\r\n");
-	   	  	pw.write("style: 'bold'\r\n");
-	   	  	pw.write("},\r\n");
+		    file+=("  ];\r\n");
+		    file+=("var fd = new $jit.ForceDirected({\r\n");
+		    file+=("injectInto: 'infovis',\r\n");
+		    file+=("Navigation: {\r\n");
+		    file+=("enable: true,\r\n");
+		    file+=("panning: 'avoid nodes',\r\n");
+		    file+=("zooming: 10 \r\n");//zoom speed. higher is more sensible
+		    file+=("  },\r\n");
+		    file+=("Node: {\r\n");
+		    file+=("overridable: true\r\n");
+		    file+=("},\r\n");
+		    file+=("Edge: {\r\n");
+		    file+=("overridable: true,\r\n");
+		    file+=("color: '#23A4FF',\r\n");
+		    file+=("lineWidth: 0.4\r\n");
+		    file+=("},\r\n");
+		    file+=("Label: {\r\n");
+		    file+=("type: labelType,\r\n"); //Native or HTML
+		    file+=(" size: 10,\r\n");
+	   	  	file+=("style: 'bold'\r\n");
+	   	  	file+=("},\r\n");
 	   	  	//Add Tips
-	   	  	pw.write(" Tips: {\r\n");
-	   	  	pw.write(" enable: true,\r\n");
-	   	  	pw.write(" onShow: function(tip, node) {\r\n");
+	   	  	file+=(" Tips: {\r\n");
+	   	  	file+=(" enable: true,\r\n");
+	   	  	file+=(" onShow: function(tip, node) {\r\n");
 			    //count connections
-	   	  	pw.write("  var count = 0;\r\n");
-	   	  	pw.write("node.eachAdjacency(function() { count++; });\r\n");
+	   	  	file+=("  var count = 0;\r\n");
+	   	  	file+=("node.eachAdjacency(function() { count++; });\r\n");
 			    //display node info in tooltip
-		  /*pw.write("tip.innerHTML = '<div class=\'tip-title\'>' + node.name + '</div>'\r\n");
-		  pw.write("+ '<div class=\'tip-text\'><b>connections:</b> ' + count + '</div>';\r\n");*/
+		  /*file+=("tip.innerHTML = '<div class=\'tip-title\'>' + node.name + '</div>'\r\n");
+		  file+=("+ '<div class=\'tip-text\'><b>connections:</b> ' + count + '</div>';\r\n");*/
 		  
 		  
-	   	  	pw.write("tip.innerHTML = '<div class= \\'tip-title\\'>' + node.name + '</div>'+'<div class=\\'tip-text\\'><b>connections:</b> ' + count + '</div>';\r\n");
+	   	  	file+=("tip.innerHTML = '<div class= \\'tip-title\\'>' + node.name + '</div>'+'<div class=\\'tip-text\\'><b>connections:</b> ' + count + '</div>';\r\n");
 		
-	   	  	pw.write("}\r\n");
-	   	  	pw.write("},\r\n");
+	   	  	file+=("}\r\n");
+	   	  	file+=("},\r\n");
 			  // Add node events
-	   	  	pw.write("Events: {\r\n");
-		    pw.write("enable: true,\r\n");
-	        pw.write("type: 'Native',\r\n");
+	   	  	file+=("Events: {\r\n");
+		    file+=("enable: true,\r\n");
+	        file+=("type: 'Native',\r\n");
 				  //Change cursor style when hovering a node
-	        pw.write("onMouseEnter: function() {\r\n");
-	        pw.write("fd.canvas.getElement().style.cursor = 'move';\r\n");
-	        pw.write("},\r\n");
-	        pw.write("onMouseLeave: function() {\r\n");
-	        pw.write("fd.canvas.getElement().style.cursor = '';\r\n");
-	        pw.write("},\r\n");
+	        file+=("onMouseEnter: function() {\r\n");
+	        file+=("fd.canvas.getElement().style.cursor = 'move';\r\n");
+	        file+=("},\r\n");
+	        file+=("onMouseLeave: function() {\r\n");
+	        file+=("fd.canvas.getElement().style.cursor = '';\r\n");
+	        file+=("},\r\n");
 				  //Update node positions when dragged
 	        		
-	        pw.write("onDragMove: function(node, eventInfo, e) {\r\n");
-			pw.write("var pos = eventInfo.getPos();\r\n");
-			pw.write("node.pos.setc(pos.x, pos.y);\r\n");
-		    pw.write("fd.plot();\r\n");
-			pw.write(" },\r\n");
+	        file+=("onDragMove: function(node, eventInfo, e) {\r\n");
+			file+=("var pos = eventInfo.getPos();\r\n");
+			file+=("node.pos.setc(pos.x, pos.y);\r\n");
+		    file+=("fd.plot();\r\n");
+			file+=(" },\r\n");
 				  //Implement the same handler for touchscreens
-			pw.write("onTouchMove: function(node, eventInfo, e) {\r\n");
-			pw.write("$jit.util.event.stop(e); \r\n");//stop default touchmove event
-			pw.write(" this.onDragMove(node, eventInfo, e);\r\n");
-			pw.write("},\r\n");
+			file+=("onTouchMove: function(node, eventInfo, e) {\r\n");
+			file+=("$jit.util.event.stop(e); \r\n");//stop default touchmove event
+			file+=(" this.onDragMove(node, eventInfo, e);\r\n");
+			file+=("},\r\n");
 				  //Add also a click handler to nodes
-			pw.write("onClick: function(node) {\r\n");
-			pw.write("if(!node) return;\r\n");
+			file+=("onClick: function(node) {\r\n");
+			file+=("if(!node) return;\r\n");
 				    // Build the right column relations list.
 				    // This is done by traversing the clicked node connections.
-			pw.write(" var html = '<h4>' + node.name + '</h4><b> connections:</b><ul><li>',\r\n");
-			pw.write(" list = [];\r\n");
-			pw.write("node.eachAdjacency(function(adj){\r\n");
-			pw.write(" list.push(adj.nodeTo.name);\r\n");
-			pw.write(" });\r\n");
+			file+=(" var html = '<h4>' + node.name + '</h4><b> connections:</b><ul><li>',\r\n");
+			file+=(" list = [];\r\n");
+			file+=("node.eachAdjacency(function(adj){\r\n");
+			file+=(" list.push(adj.nodeTo.name);\r\n");
+			file+=(" });\r\n");
 				    //append connections information
-			pw.write("$jit.id('inner-details').innerHTML = html + list.join('</li><li>') + '</li></ul>';\r\n");
-			pw.write("}\r\n");
-			pw.write("},\r\n");
+			file+=("$jit.id('inner-details').innerHTML = html + list.join('</li><li>') + '</li></ul>';\r\n");
+			file+=("}\r\n");
+			file+=("},\r\n");
 				  //Number of iterations for the FD algorithm
-			pw.write("iterations: 200,\r\n");
+			file+=("iterations: 200,\r\n");
 				  //Edge length
-			pw.write("levelDistance: 130,\r\n");
+			file+=("levelDistance: 130,\r\n");
 				  // Add text to the labels. This method is only triggered
 				  // on label creation and only for DOM labels (not native canvas ones).
-			pw.write("onCreateLabel: function(domElement, node){\r\n");
-			pw.write("domElement.innerHTML = node.name;\r\n");
-			pw.write("var style = domElement.style;\r\n");
-			pw.write("style.fontSize = '0.8em';\r\n");
-		    pw.write("style.color = '#ddd';\r\n");
-			pw.write("},\r\n");
+			file+=("onCreateLabel: function(domElement, node){\r\n");
+			file+=("domElement.innerHTML = node.name;\r\n");
+			file+=("var style = domElement.style;\r\n");
+			file+=("style.fontSize = '0.8em';\r\n");
+		    file+=("style.color = '#ddd';\r\n");
+			file+=("},\r\n");
 				  // Change node styles when DOM labels are placed
 				  // or moved.
-		    pw.write("onPlaceLabel: function(domElement, node){\r\n");
-			pw.write("var style = domElement.style;\r\n");
-			pw.write("var left = parseInt(style.left);\r\n");
-			pw.write("var top = parseInt(style.top);\r\n");
-			pw.write("var w = domElement.offsetWidth;\r\n");
-			pw.write("style.left = (left - w / 2) + 'px';\r\n");
-			pw.write("style.top = (top + 10) + 'px';\r\n");
-			pw.write("style.display = '';\r\n");
-			pw.write("}\r\n");
-			pw.write("});\r\n");
+		    file+=("onPlaceLabel: function(domElement, node){\r\n");
+			file+=("var style = domElement.style;\r\n");
+			file+=("var left = parseInt(style.left);\r\n");
+			file+=("var top = parseInt(style.top);\r\n");
+			file+=("var w = domElement.offsetWidth;\r\n");
+			file+=("style.left = (left - w / 2) + 'px';\r\n");
+			file+=("style.top = (top + 10) + 'px';\r\n");
+			file+=("style.display = '';\r\n");
+			file+=("}\r\n");
+			file+=("});\r\n");
 				  // load JSON data.
-			pw.write("fd.loadJSON(json);\r\n");
+			file+=("fd.loadJSON(json);\r\n");
 				  // compute positions incrementally and animate.
-			pw.write("fd.computeIncremental({\r\n");
-			pw.write("iter: 40,\r\n");
-			pw.write("property: 'end',\r\n");
-			pw.write("onStep: function(perc){\r\n");
-			pw.write("Log.write(perc + '% loaded...');\r\n");
-			pw.write("},\r\n");
-			pw.write("onComplete: function(){\r\n");
-			pw.write("Log.write('done');\r\n");
-			pw.write("fd.animate({\r\n");
-		    pw.write("modes: ['linear'],\r\n");
-			pw.write("transition: $jit.Trans.Elastic.easeOut,\r\n");
-			pw.write("duration: 2500\r\n");
-			pw.write("});\r\n");
-			pw.write("}\r\n");
-			pw.write("});\r\n");
+			file+=("fd.computeIncremental({\r\n");
+			file+=("iter: 40,\r\n");
+			file+=("property: 'end',\r\n");
+			file+=("onStep: function(perc){\r\n");
+			file+=("Log.write(perc + '% loaded...');\r\n");
+			file+=("},\r\n");
+			file+=("onComplete: function(){\r\n");
+			file+=("Log.write('done');\r\n");
+			file+=("fd.animate({\r\n");
+		    file+=("modes: ['linear'],\r\n");
+			file+=("transition: $jit.Trans.Elastic.easeOut,\r\n");
+			file+=("duration: 2500\r\n");
+			file+=("});\r\n");
+			file+=("}\r\n");
+			file+=("});\r\n");
 				  // end
-			pw.write("}\r\n");
-		  
-			pw.close();  
+			file+=("}\r\n");
+		  return file;
 		}
 		
 	
