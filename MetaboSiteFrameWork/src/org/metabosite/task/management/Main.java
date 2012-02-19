@@ -26,7 +26,7 @@ public class Main {
 		
 	}
 
-	public static class Test1 implements Task {
+	public static class Test1 extends Task {
 		public String name ="jjj";
 		private static Integer cpt1=0;
 		@Override
@@ -37,7 +37,7 @@ public class Main {
 		
 
 	}
-	public static class Test2 implements Task{
+	public static class Test2 extends Task{
 		private static Integer cpt2=0;
 		@Override
 		public void launch() {
@@ -46,7 +46,7 @@ public class Main {
 		}
 		
 	}
-	public static class Test3 implements Task{
+	public static class Test3 extends Task{
 		private static Integer cpt3=0;
 		@Override
 		public void launch() {

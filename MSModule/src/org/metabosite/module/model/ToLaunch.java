@@ -18,7 +18,7 @@ import src.entities.Siteuser;
 
 
 
-public class ToLaunch implements Task {
+public class ToLaunch extends Task {
 
 	private File fileIn;
 	private Siteuser siteuser;

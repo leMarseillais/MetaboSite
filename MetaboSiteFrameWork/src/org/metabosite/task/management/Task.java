@@ -1,6 +1,8 @@
 package org.metabosite.task.management;
 
-public interface Task {
+public abstract class Task {
 
-	public void launch();
+	public Boolean terminate = false;
+	public abstract void launch();
+	
 }

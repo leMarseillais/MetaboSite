@@ -15,6 +15,7 @@ public class TaskLauncher extends Thread implements Runnable {
 	@Override
 	public void run() {
 		this.task.launch();
+		this.task.terminate =true;
 	}
 
 }
