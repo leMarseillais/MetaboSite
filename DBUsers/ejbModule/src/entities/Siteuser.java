@@ -140,8 +140,18 @@ public class Siteuser implements Serializable {
         
         return has(droit);
     }
-    
-    public static final int AT_LEAST_ONE = 0;
+
+	public void setDroit(Integer droit) {
+		this.droit = droit;
+	}
+
+	public void setFiles(Set<Files> files) {
+		this.files = files;
+	}
+
+
+
+	public static final int AT_LEAST_ONE = 0;
     public static final int COMPARE_ALL = 1;
     public static final int MAX = 2;
     public static final int INF = 3;

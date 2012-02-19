@@ -6,10 +6,25 @@ La solution choisie pour la gestion des fichiers est de créer un dépendance en
 
 \paragraph*{Sélection de fichier}
 
-Pour le développeur de module, pour la sélection de fichier, on propose d'utiliser un navigateur de fichier d'un utilisateur. Ce navigateur apparait en pop-up pour gêner au minimum la navigation sur le site web. L'outil retourne un objet File lorsque l'utilisateur sélectionne un fichier. C'est à partir de ce type d'objet que les modules doivent travailler.\\
+Pour la sélection de fichier, on propose d'utiliser un navigateur de fichier d'un utilisateur. Ce navigateur apparait en pop-up pour gêner au minimum la navigation sur le site web. L'outil retourne un objet File lorsque l'utilisateur sélectionne un fichier. C'est à partir de ce type d'objet que les modules doivent travailler.\\
 
 \paragraph*{Sauvegarde de fichier}
 
-La sauvegarde de fichier se fera à la racine du répertoire associé à l'utilisateur sous la forme "Nom su module"+"date de création du fichier"+"extension". Pour utiliser ce service il suffit de créer une instance de la classe FilesManage. Avec cette instance, appeler la méthode saveFile en lui passant en paramètre les informations nécessaire à la création du fichier. Cette méthode se charge de créer le fichier et de le sauvegarder dans la base de données.
+La sauvegarde de fichier se fera à la racine du répertoire associé à l'utilisateur sous la forme "Nom su module"+"date de création du fichier"+"extension". Pour utiliser ce service il suffit de créer une instance de la classe FilesManage. Avec cette instance, appeler la méthode saveFile en lui passant en paramètre les informations nécessaire à la création du fichier. Cette méthode se charge de créer le fichier et de le sauvegarder dans la base de données.\\
 
 \subsection{Gestion des taches}
+
+Pour la gestion des taches, on a créé un singleton TaskManager. Cette classe contient des map ayant pour clef un utilisateur et en valeur les taches lancée par cet utilisateur. Elle contient aussi une instance de ExecutorService, qui permet de constituer un pool de thread. Un pool de thread gère un ensemble de threads travailleurs.Il est étroitement lié à une file contenant des tâches en attente . La vie des thread travailleurs est simple : demander la tâche suivante dans la file, l'exécuter et revenir attendre une autre tâche. Dans notre gestionnaire le nombre de thread travailleurs est fixé dynamiquement en fonction du nombre de processeurs logique sur la machine où est installé l'application.\\
+De plus il y a deux autres classes crées : \\
+\begin{itemize}
+\item une interface Task qui doit être implémenté par le module
+\item une classe TaskLauncher qui implémente Runnable et étant Thread
+\end{itemize}
+Pour lancer une tache il faut :
+\begin{verbatim}
+TaskManager taskManager = TaskManager.getInstance();
+taskManager.addTask(new Task(),utilisateur);
+\end{verbatim}
+Le gestionnaire propose aussi cd fournir une liste de tache par utilisateur ainsi que leur état. Il propose aussi je supprimer ces taches.\\
+
+
