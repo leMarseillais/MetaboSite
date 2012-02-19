@@ -1,1 +1,20 @@
 \section{Base de données}
+
+Nous choisissons comme système de gestion de base de données (SGBD) PostgreSQL, car c'est le SGBD que nous connaissons le mieux. Donc nous avons une très grande facilité à mettre en place les différentes base de données.\\
+
+Nous utilisons la  Java Persistence API (JPA), qui est une interface de programmation Java permettant aux développeurs d'organiser des données relationnelles dans des applications utilisant la plateforme Java.
+La JPA repose essentiellement sur l'utilisation des annotations. Elles permettent de définir très facilement, et précisément des objets métier, qui pourront servir d'interface entre la base de données et l'application.\\
+
+Nous choisissons EclipseLink comme implémentation de la JPA. Car EclipseLink  a été choisi pour être l'implémentation de référence de la spécification JPA 2.0. Dans la pratique cela signifie notamment son intégration dans Glassfish V3. L'implémentation d'une couche de mapping objet-relationnel entre un modèle métier "objet" et une base de données relationnelle présente de nombreux avantages. La maitrise de l'API JPA et la qualité d'une implémentation JPA telle qu'EclipseLink (Eclipse Persistence Services) permettent d'exploiter pleinement les intérêts du mapping objet-relationnel.\\
+
+
+Nous utilisons les Entreprise Java Bean (EJB) .Les EJB sont des composants serveurs donc non visuels qui respectent les spécifications d'un modèle édité par Sun. Ces spécifications définissent une architecture, un environnement d'exécution et un ensemble d'API. Le respect de ces spécifications permet d'utiliser les EJB de façon indépendante du serveur d'applications J2EE dans lequel ils s'exécutent, du moment où le code de mise en oeuvre des EJB n'utilise pas d'extensions proposées par un serveur d'applications particulier. Une des principales caractéristiques des EJB est de permettre de se concentrer sur les traitements orientés métiers car les EJB et l'environnement dans lequel ils s'exécutent prennent en charge un certain nombre de traitements tel que la gestion des transactions, la persistance des données, la sécurité, ...
+Physiquement, un EJB est un ensemble d'au moins deux interfaces et une classe regroupées dans un module contenant un descripteur de déploiement particulier.\\
+\begin{figure}[position]
+   \caption{Schéma d'utilisation des EJB}
+	\includegraphics[scale=1]{ejb001.gif} 
+\end{figure}
+
+
+
+Nous créons un EJB par base  de données. Ils contiennent les entités ainsi que les services permettant l'accès et la manipulation de ces entités. Les services proposent aussi la possibilité de lancer des requêtes près enregistrées dans la base de données.\\
