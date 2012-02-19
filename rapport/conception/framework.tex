@@ -1,0 +1,24 @@
+\section{Framework}
+
+Le Framework est la solution apporté pour permettre aux développeurs de module d'interagir avec notre application. Pour cela le Framework devra proposer différentes solutions d'accès à des méthodes facile d'utilisation et permettant de répondre à l'ensemble de leurs besoins. \\
+
+
+\subsection{Gestion des fichiers}
+
+Les développeurs ont dans un premier temps besoin d'utiliser des fichiers d'entrées et de sortie. Il leur faut donc un accès à la base de donné d'utilisateur pour avoir accès à leur fichier, et aussi savoir quel utilisateur lance le module. De plus le module à besoin de sauvegarder un fichier de sortie. Donc il faudra fournir différentes méthodes :\\
+\begin{itemize}
+\item une retournant l'utilisateur connecté sur la page en cours
+\item une retournant le chemin un objet fichier sélectionné par un utilisateur dans sa base de donnée
+\item une retournant un l'adresse de sauvegarde du fichier de sortie
+\item une permettant de sauvegarder un fichier sur le serveur et la base de donnée.
+\end{itemize}
+
+\subsection{Gestion des taches}
+
+Pour permettre un meilleur fonctionnement de l'application, il serait utile d'utiliser la parallélisation des taches. Pour cela il faut avoir accès à un gestionnaire de taches. Ce gestionnaire de taches doit donc proposer différentes méthodes : \\
+\begin{itemize}
+\item ajout et lancement d'une tache
+\item consultation des taches en cours d'un utilisateur
+\item consultation de l'état des taches d'un utilisateur
+\item suppression d'une tache
+\end{itemize}

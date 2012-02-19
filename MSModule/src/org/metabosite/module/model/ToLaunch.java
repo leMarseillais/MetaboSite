@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
+import org.metabosite.file.mangement.FilesManage;
 import org.metabosite.task.management.Task;
 import org.sbml.jsbml.SBMLDocument;
 import org.sbml.jsbml.SBMLReader;
@@ -34,7 +35,8 @@ public class ToLaunch implements Task {
 			SBMLDocument sbmlDocument=reader.readSBML(fileIn.getPath());
 			JSBMLvisualiser jvi= new JSBMLvisualiser(sbmlDocument);
 			Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Parssage du sbml");
-			File fileOut=new File(siteuser.getRepertory()+"Visu"+Long.toString(System.currentTimeMillis()));
+			FilesManage filesManage = new FilesManage("Javascript code for pathway visualisation", "js", ".js", siteuser, "Visu", "");
+			File fileOut= new File("toto");
 			jvi.write(fileOut);
 			Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Žcriture du JS");
 		} catch (FileNotFoundException e) {

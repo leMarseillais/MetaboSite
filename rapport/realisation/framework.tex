@@ -1,0 +1,15 @@
+\section{Framework}
+
+\subsection{Gestion des fichiers}
+
+La solution choisie pour la gestion des fichiers est de créer un dépendance entre le Framework et l'EJB qui gère les connections à la base de données utilisateur.\\
+
+\paragraph*{Sélection de fichier}
+
+Pour le développeur de module, pour la sélection de fichier, on propose d'utiliser un navigateur de fichier d'un utilisateur. Ce navigateur apparait en pop-up pour gêner au minimum la navigation sur le site web. L'outil retourne un objet File lorsque l'utilisateur sélectionne un fichier. C'est à partir de ce type d'objet que les modules doivent travailler.\\
+
+\paragraph*{Sauvegarde de fichier}
+
+La sauvegarde de fichier se fera à la racine du répertoire associé à l'utilisateur sous la forme "Nom su module"+"date de création du fichier"+"extension". Pour utiliser ce service il suffit de créer une instance de la classe FilesManage. Avec cette instance, appeler la méthode saveFile en lui passant en paramètre les informations nécessaire à la création du fichier. Cette méthode se charge de créer le fichier et de le sauvegarder dans la base de données.
+
+\subsection{Gestion des taches}
