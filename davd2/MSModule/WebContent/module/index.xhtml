@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:roa="http://richfaces.org/a4j"
+	xmlns:mbui="http://metabosite.org/ui"
+	xmlns:mbui2="http://java.sun.com/jsf/composite/comp/file">
+
+<h:head>
+	<meta charset="UTF-8" />
+	<title>#{MODULE_RB.NAME}</title>
+	<link rel="stylesheet" type="text/css"
+		href="#{resource['css:module.css']}" />
+	<link type="text/css" href="#{resource['css:viz_base.css']}"
+		rel="stylesheet" />
+	<link type="text/css" href="#{resource['css:viz_ForceDirected.css']}"
+		rel="stylesheet" />
+</h:head>
+<h:body onload="if (#{moduleController.terminated}) if (typeof init == 'function') init();">
+	<div id="content">
+		<div id="left">
+			#{utilisateurController.user.login}
+			<mbui:menu items="#{moduleController.menuItems}">
+				<mbui:menuItem name="Google" href="http://www.google.fr/" />
+				<mbui:menuItem name="Cremi" href="http://emi.u-bordeaux1.fr/" />
+			</mbui:menu>
+			<mbui:optionsPanel options="#{moduleController.mesOptions}">
+				<mbui:option name="name" value="val" />
+			</mbui:optionsPanel>
+		</div>
+		<mbui:modSpace title="#{MODULE_RB.NAME}">
+			<rich:messages />
+			<!-- CHOOSE A FILE -->
+			<mbui2:file value="#{moduleController.fileToUse}" />
+
+			<!-- VISUALISATION -->
+			<h:form>
+				<a4j:outputPanel id="op_run_vis">
+					<a4j:commandLink 
+						id="run_vis"
+						rendered="#{!moduleController.terminated}"
+						action="#{moduleController.calcul()}" 
+						render="taskPoll"
+						value="#{MODULE_RB.VISU_PANEL_TITLE}"
+						href="#" />
+				</a4j:outputPanel>
+				<span id="waiting"></span>
+			</h:form>
+			<div id="log"></div>
+			<div id="network_vis" 
+				style="display:#{(moduleController.terminated) ? 'block' : 'none'}">
+
+				<div id="center-container">
+					<div id="infovis"></div>
+				</div>
+			</div>
+		</mbui:modSpace>
+	</div>
+	
+	<h:form>
+		<a4j:poll id="taskPoll" interval="1000" 
+			onbegin="
+				if (#{moduleController.terminated}) {
+					document.getElementById('waiting').innerHTML='';
+					#{rich:component('taskPoll')}.setEnabled(false);
+				} else {
+					document.getElementById('waiting').innerHTML+='.';
+				}
+			"
+			enabled="#{moduleController.taskLaunched}" 
+			oncomplete="
+				if (#{moduleController.terminated}) {
+					if (typeof init == 'function')  {
+						document.getElementById('network_vis').style.display = 'block';
+						init();
+					}
+				}
+			"
+			render="script_vis,op_run_vis">
+		</a4j:poll>
+	</h:form>
+	
+	<h:outputScript name="js/jit.js" />
+	<a4j:outputPanel id="script_vis">
+		<script type="text/javascript">
+			<h:outputText value="#{moduleController.fileOut}" />
+		</script>
+	</a4j:outputPanel>
+</h:body>
+</html>
