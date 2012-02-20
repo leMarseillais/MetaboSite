@@ -62,7 +62,6 @@ public class FileSystemController implements Serializable, Reinitialize {
 	private Map<String, Boolean> renderedDesc = new HashMap<String, Boolean>();
 
 	private UITree filesTree;
-	private DataModel<Siteuser> notAddedUsers;
 
 	@EJB
 	private FileFacadeLocal fichierFacade;
@@ -94,7 +93,7 @@ public class FileSystemController implements Serializable, Reinitialize {
 		this.filesTree = filesTree;
 	}
 
-	public DataModel<KFile> getFilessModel() {
+	public DataModel<KFile> getFichiersModel() {
 		Collection<KFile> files = fichiers.values();
 		List<KFile> filesList = new ArrayList<KFile>();
 		for (Iterator<KFile> kFiles = files.iterator(); kFiles.hasNext();) {
@@ -185,11 +184,9 @@ public class FileSystemController implements Serializable, Reinitialize {
 	}
 
 	public synchronized List<FileSystemNode> getRoots() {
-		if (roots == null) {
 			ResourceBundle err_rb = Bundle.Err.getBundle();
 
 			try {
-				System.out.println(Global.getFILES_PATH());
 				FileSystemNode fsn = new FileSystemNode(Global.getFILES_PATH(), null,
 						fichierFacade, FileSystemNode.Type.DIR);
 				roots = fsn.getDirectories();
@@ -204,9 +201,9 @@ public class FileSystemController implements Serializable, Reinitialize {
 				Logger.getLogger(FileSystemController.class.getName()).log(
 						Level.SEVERE, null, ex);
 			}
-		}
 
 		// Modifiable -- nécessaire !
+		rootSelection();
 		return roots;
 	}
 
@@ -227,7 +224,6 @@ public class FileSystemController implements Serializable, Reinitialize {
 			FileSystemNode fsn = new FileSystemNode(Global.getFILES_PATH(), null,
 					fichierFacade, FileSystemNode.Type.DIR);
 			setSelection(fsn);
-			setNotAddedUsers(null);
 		}
 	}
 
@@ -238,7 +234,6 @@ public class FileSystemController implements Serializable, Reinitialize {
 			for (FileSystemNode fsn : oldSelection) {
 				selection.add(fsn);
 			}
-			setNotAddedUsers(null);
 		}
 	}
 
@@ -259,8 +254,6 @@ public class FileSystemController implements Serializable, Reinitialize {
 		}
 
 		roots = null;
-		setNotAddedUsers(null);
-		// utilisateurController.resetUserItems();
 	}
 
 	public void removeSelection(ActionEvent event) {
@@ -270,7 +263,6 @@ public class FileSystemController implements Serializable, Reinitialize {
 		}
 
 		roots = null;
-		setNotAddedUsers(null);
 		resetSelections();
 
 		if (parentPath != null) {
@@ -319,7 +311,6 @@ public class FileSystemController implements Serializable, Reinitialize {
 							Level.SEVERE, "Files non trouvé ! ({0})", newPath);
 				}
 
-				setNotAddedUsers(null);
 			}
 		}
 		resetCurrent();
@@ -345,7 +336,7 @@ public class FileSystemController implements Serializable, Reinitialize {
 			return;
 		}
 
-		for (Iterator<KFile> kFiles = getFilessModel().iterator(); kFiles
+		for (Iterator<KFile> kFiles = getFichiersModel().iterator(); kFiles
 				.hasNext();) {
 			KFile kFile = kFiles.next();
 
@@ -401,16 +392,13 @@ public class FileSystemController implements Serializable, Reinitialize {
 	}
 	
 	public void setBinding(StringBuilder bindingValue) {
-		System.out.println("before selectionchange");
-		System.out.println(bindingValue);
 		this.bindingValue = bindingValue;
 	}
 
 	public void selectionChanged(TreeSelectionChangeEvent event) {
 		setSelection(selectionNode(event.getNewSelection(), event.getSource()));
-		setNotAddedUsers(null);
 		bindingValue.delete(0, bindingValue.length());
-		bindingValue.append(getFirstSelection().getPath());
+		bindingValue.append(getFirstSelection().getDetails().getFileLocation());
 	}
 
 	private String genFileKey(UploadedFile file) {
@@ -446,6 +434,7 @@ public class FileSystemController implements Serializable, Reinitialize {
 			String name = eFile.getName();
 			String ext = KFile.findExt(name);
 			String mime = eFile.getContentType();
+			System.out.println(mime);
 
 			if (!KFile.equivalents(mime, ext)) {
 				mime = KFile.getAuthorizedMime(ext);
@@ -584,23 +573,6 @@ public class FileSystemController implements Serializable, Reinitialize {
 		roots = null;
 		selection = null;
 		oldSelection = null;
-		setNotAddedUsers(null);
-	}
-
-	public DataModel<KFile> getFichiersModel() {
-		return fichiersModel;
-	}
-
-	public void setFichiersModel(DataModel<KFile> fichiersModel) {
-		this.fichiersModel = fichiersModel;
-	}
-
-	public DataModel<Siteuser> getNotAddedUsers() {
-		return notAddedUsers;
-	}
-
-	public void setNotAddedUsers(DataModel<Siteuser> notAddedUsers) {
-		this.notAddedUsers = notAddedUsers;
 	}
 
 }

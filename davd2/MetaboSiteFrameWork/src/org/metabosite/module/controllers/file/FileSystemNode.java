@@ -48,7 +48,7 @@ public class FileSystemNode implements TreeNode {
 		if (path == null) {
 			return "";
 		}
-		return path.replace(Global.getFILES_PATH(), "");
+		return path.replace(Global.getFP(), "");
 	}
 
 	public List<FileSystemNode> getChilds() {
@@ -185,8 +185,14 @@ public class FileSystemNode implements TreeNode {
 			throws EntityAlreadyExistsKException, FileNotFoundException,
 			IOException {
 		if (userCo != null) {
+			
+			String ext = "";
+			if (kf.getClass().getName().equals(KFile.class.getName())) {
+				ext = ((KFile) kf).getExt();
+			}
+			
 			String newPath = new File(path).getAbsolutePath() + "/"
-					+ kf.getName();
+					+ kf.getName() + ((ext != "") ? "." + ext : "");
 
 			FileSystemNode node = null;
 			if (kf.mime.equals("inode/directory")) {

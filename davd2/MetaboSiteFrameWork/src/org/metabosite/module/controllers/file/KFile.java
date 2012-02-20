@@ -60,6 +60,7 @@ public class KFile extends KDir {
             authorizedMimes.put("application/vnd.ms-excel", new String[] {"xls"});
             authorizedMimes.put("application/msword", new String[] {"doc"});
             authorizedMimes.put("application/zip", new String[] {"zip"});
+            authorizedMimes.put("text/xml", new String[] {"xml"});
             authorizedMimes.put("application/octet-stream", new String[] {"bin"});
         }
         return Collections.unmodifiableMap(authorizedMimes);

@@ -40,7 +40,6 @@ public class Module implements Serializable {
 	FileFacadeLocal fFacade;
 
 	public StringBuilder getFileToUse() {
-		System.out.println(fileToUse);
 		return fileToUse;
 	}
 

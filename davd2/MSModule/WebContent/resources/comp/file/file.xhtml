@@ -49,8 +49,7 @@
 							event="begin" />
 					</a4j:commandLink>
 				</h:form>
-
-				<h:panelGrid columns="3" style="width: 100%;" id="files_panel">
+				<h:panelGrid columns="3" style="width: 100%;" id="files_panel" onmouseover="#{fileSystemController.setBinding(cc.attrs.value)}">
 					<rich:panel>
 						<f:facet name="header">
 							<h:outputText value="#{Files_RB.treePanelHeader}" />
@@ -62,7 +61,7 @@
 						</a4j:outputPanel>
 	
 						<h:form id="files_tree_form">
-							<rich:tree id="files_tree" selectionType="ajax" onbeforeselectionchange="#{fileSystemController.setBinding(cc.attrs.file.value)}"
+							<rich:tree id="files_tree" selectionType="ajax" 
 								selectionChangeListener="#{fileSystemController.selectionChanged}"
 								var="item" nodeType="#{item.type}">
 	
@@ -136,12 +135,6 @@
                         </h:outputLink>
 				</f:facet>
 
-				<a4j:outputPanel ajaxRendered="true">
-
-					<h:outputText
-						value="(#{fileSystemController.firstSelection.appPath})"
-						rendered="#{fileSystemController.firstSelection.appPath.length() > 0}" />
-				</a4j:outputPanel>
 				<h:form>
 					<h:panelGroup>
 						<h:outputText

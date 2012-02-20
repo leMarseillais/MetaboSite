@@ -33,6 +33,10 @@ public class Global {
 	private static String FILES_PATH;
 
 	private static List<UserController> usersSessions = new ArrayList<UserController>();
+	
+	public static String getFP() {
+		return FILES_PATH;
+	}
 
 	public static String getFILES_PATH() {
 		return FILES_PATH + getUser().getLogin() + "/";

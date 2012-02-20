@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.metabosite.utils.KFile;
+import org.metabosite.module.controllers.file.KFile;
 import org.metabosite.module.utils.Session;
 
 import src.EJBKException;
