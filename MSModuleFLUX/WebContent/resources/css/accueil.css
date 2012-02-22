@@ -1,0 +1,39 @@
+html, body {
+    margin: 0;
+    background: #020207;
+}
+
+#background {
+    width: 1000px;
+    height: 700px;
+    margin: auto auto;
+    position: relative;
+    background: transparent url("../img/Accueil_fond.png") no-repeat;
+    color: white;
+}
+
+#reflet1 {
+    display: block;
+    width: 220px;
+    height: 110px;
+    position: absolute;
+    top: 31px;
+    left: 40px;
+}
+
+#reflet1:hover {
+    background: transparent url("../img/Accueil_reflet.png") no-repeat;
+}
+
+#reflet2 {
+    display: block;
+    width: 220px;
+    height: 110px;
+    position: absolute;
+    bottom: 80px;
+    right: 32px;
+}
+
+#reflet2:hover {
+    background: transparent url("../img/Accueil_reflet.png") no-repeat;
+}

@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+	
+	<head>
+		<meta charset="UTF-8" />
+	</head>
+	<body>
+		<cc:interface name="file" displayName="File Chooser">
+			<cc:attribute name="value" required="true" type="java.lang.StringBuilder" />
+		</cc:interface>
+		
+		<cc:implementation>
+			<h:form>
+				<a4j:commandButton execute="@none" value="#{UI_FS_RB.FILE_BUTTON_OPEN_POPUP}">
+					<rich:componentControl 
+						target="file_popup" 
+						operation="show" 
+						event="click" />
+				</a4j:commandButton>
+			</h:form>
+			
+			<rich:popupPanel id="file_popup" modal="true" resizeable="false"
+				moveable="false" autosized="false" minWidth="200" 
+				onmaskclick="#{rich:component('file_popup')}.hide(); return false;">
+
+				<!-- FILE POPUP CONTROL -->
+				<f:facet name="header">
+					<h:outputText value="#{UI_FS_RB.FILE_POPUP_TITLE}" />
+				</f:facet>
+				<f:facet name="controls">
+					<h:outputLink value="#"
+						onclick="#{rich:component('file_popup')}.hide(); return false;">
+                            #{UI_FS_RB.FILE_POPUP_CLOSE}
+					</h:outputLink>
+				</f:facet>
+				
+				<h:form>
+					<a4j:commandLink value="#{Files_RB.addFilesLink}"
+						actionListener="#{fileSystemController.resetSelection()}">
+
+						<rich:componentControl target="addFile" operation="show"
+							event="begin" />
+					</a4j:commandLink>
+				</h:form>
+
+				<h:panelGrid columns="3" style="width: 100%;" id="files_panel">
+					<rich:panel>
+						<f:facet name="header">
+							<h:outputText value="#{Files_RB.treePanelHeader}" />
+						</f:facet>
+						
+						<a4j:outputPanel ajaxRendered="true">
+							<h:outputText rendered="#{fileSystemController.roots.isEmpty()}"
+								value="#{Files_RB.noDir}" />
+						</a4j:outputPanel>
+	
+						<h:form id="files_tree_form">
+							<rich:tree id="files_tree" selectionType="ajax" onbeforeselectionchange="#{fileSystemController.setBinding(cc.attrs.file.value)}"
+								selectionChangeListener="#{fileSystemController.selectionChanged}"
+								var="item" nodeType="#{item.type}">
+	
+								<a4j:ajax event="selectionchange" render="files_panel" />
+								<a4j:ajax event="click"
+									listener="#{fileSystemController.resetSelection()}"
+									render="files_panel" />
+	
+								<rich:treeModelRecursiveAdaptor
+									roots="#{fileSystemController.roots}"
+									nodes="#{item.directories}">
+									<rich:treeNode id="dirNode" type="DIR"
+										onclick="var n=#{rich:component('dirNode')};if (!n.isExpanded()) n.toggle()"
+										iconCollapsed="#{fileSystemController.dirIcon(item.isRoot())}"
+										iconExpanded="#{fileSystemController.dirIcon(item.isRoot())}">
+	
+										<h:form>
+											<h:outputText value="#{item.shortPath}" />
+	
+	
+											<a4j:outputPanel id="dirFile" style="display: none;">
+	
+												<h:outputText value=" [ " />
+												<a4j:commandLink value="#{Files_RB.addDirLink}"
+													actionListener="#{fileSystemController.resetSelection()}">
+	
+													<rich:componentControl target="addDir" operation="show"
+														event="begin" />
+												</a4j:commandLink>
+												<h:outputText value=" | " />
+												<a4j:commandLink value="#{Files_RB.addFilesLink}"
+													actionListener="#{fileSystemController.resetSelection()}">
+	
+													<rich:componentControl target="addFile" operation="show"
+														event="begin" />
+												</a4j:commandLink>
+												<h:outputText value=" | " />
+												<a4j:commandLink value="#{Files_RB.rmFilesLink}"
+													actionListener="#{fileSystemController.resetSelection()}">
+	
+													<rich:componentControl target="rmDir" operation="show"
+														event="begin" />
+												</a4j:commandLink>
+												<h:outputText value=" ] " />
+											</a4j:outputPanel>
+										</h:form>
+									</rich:treeNode>
+	
+									<rich:treeNode type="FILE" expanded="#{true}"
+										iconExpanded="#{fileSystemController.iconLeaf(item)}">
+	
+										<h:outputText value="#{item.shortPath}" />
+									</rich:treeNode>
+								</rich:treeModelRecursiveAdaptor>
+							</rich:tree>
+						</h:form>
+					</rich:panel>
+				</h:panelGrid>
+				
+			</rich:popupPanel>
+			<rich:popupPanel id="addFile" modal="true" resizeable="false"
+				moveable="true" autosized="true" followByScroll="true">
+
+				<f:facet name="header">
+					<h:outputText value="#{Files_RB.addFile}" />
+				</f:facet>
+				<f:facet name="controls">
+					<h:outputLink value="#"
+						onclick="#{rich:component('addFile')}.hide(); return false;">
+                            ×
+                        </h:outputLink>
+				</f:facet>
+
+				<a4j:outputPanel ajaxRendered="true">
+
+					<h:outputText
+						value="(#{fileSystemController.firstSelection.appPath})"
+						rendered="#{fileSystemController.firstSelection.appPath.length() > 0}" />
+				</a4j:outputPanel>
+				<h:form>
+					<h:panelGroup>
+						<h:outputText
+							value="Fichiers acceptés : #{fileSystemController.acceptedTypes()}" />
+						<a4j:outputPanel ajaxRendered="true" style="float: right;">
+							<a4j:commandButton
+								rendered="#{fileSystemController.nFiles() > 0}"
+								value="#{Files_RB.addDirSubmit}"
+								actionListener="#{fileSystemController.saveFiles()}"
+								render="files_tree, files, chemin"
+								onclick="#{rich:component('addFile')}.hide();" />
+						</a4j:outputPanel>
+					</h:panelGroup>
+					<h:panelGrid columns="2" columnClasses="top, top">
+						<rich:fileUpload id="chemin" limitRender="true"
+							fileUploadListener="#{fileSystemController.upload}"
+							acceptedTypes="#{fileSystemController.acceptedTypes()}"
+							addLabel="#{Rich_RB.addLabel}"
+							clearAllLabel="#{Rich_RB.clearAllLabel}"
+							clearLabel="#{Rich_RB.clearLabel}"
+							deleteLabel="#{Rich_RB.deleteLabel}"
+							uploadLabel="#{Rich_RB.uploadLabel}"
+							doneLabel="#{Rich_RB.doneLabel}"
+							serverErrichLabel="#{Rich_RB.serverErrichLabel}"
+							sizeExceededLabel="#{Rich_RB.sizeExceededLabel}">
+							<a4j:ajax event="uploadcomplete" execute="@none" render="files" />
+						</rich:fileUpload>
+						<a4j:outputPanel ajaxRendered="true">
+							<rich:panel id="files" styleClass="info"
+								rendered="#{fileSystemController.fichiersModel.rowCount > 0}">
+								<f:facet name="header">
+									<h:outputText
+										value="#{MBFE_RB.CreateFichierTitle_uploadedFiles}" />
+								</f:facet>
+								<rich:dataGrid id="dataGridFichiers" columns="1"
+									value="#{fileSystemController.fichiersModel}" var="fichier">
+									<h:panelGroup>
+										<h:form>
+											<rich:inplaceInput id="nom" value="#{fichier.name}">
+												<a4j:ajax event="blur" execute="@form" limitRender="true" />
+											</rich:inplaceInput>
+											<br />
+											<a4j:commandLink id="cLinkDesc" limitRender="true"
+												value="#{MBFE_RB.CreateFichierTitle_desc}" execute="@none"
+												render="@none"
+												onclick="
+												var fd = #{rich:element('ficDesc')};
+												if (fd.style.display == 'none') {
+													fd.style.display = 'block';
+                                                	#{rich:element('desc_fichier')}.focus();
+												} else {
+													fd.style.display = 'none';
+												}" />
+                                            |
+                                            <a4j:commandLink
+												value="#{MBFE_RB.CreateFichierTitle_delete}"
+												actionListener="#{fileSystemController.deleteListener()}"
+												render="dataGridFichiers" />
+											<br />
+											<a4j:outputPanel id="ficDesc" style="display: none;">
+												<h:outputLabel for="desc_fichier"
+													value="#{MBFE_RB.CreateFichierLabel_descfichier}" />
+												<br />
+												<h:inputTextarea id="desc_fichier" value="#{fichier.desc}">
+													<a4j:ajax event="blur" execute="@form" limitRender="true" />
+												</h:inputTextarea>
+											</a4j:outputPanel>
+										</h:form>
+									</h:panelGroup>
+								</rich:dataGrid>
+							</rich:panel>
+						</a4j:outputPanel>
+					</h:panelGrid>
+				</h:form>
+			</rich:popupPanel>
+		</cc:implementation>
+	</body>
+</html>

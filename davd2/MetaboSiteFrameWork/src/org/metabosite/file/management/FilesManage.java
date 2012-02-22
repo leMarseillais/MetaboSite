@@ -20,7 +20,7 @@ public class FilesManage {
 		FilesManage.ejbFacade = ejbFacade;
 	}
 
-	public void saveFile(String fileDescription, String mime, String extention,
+	public String saveFile(String fileDescription, String mime, String extention,
 			Siteuser siteuser, String modulename, String stringFile) {
 		String fileName = modulename + "_" + Global.currentTime() + "."
 				+ extention;
@@ -41,6 +41,7 @@ public class FilesManage {
 			e.printStackTrace();
 		}
 		ejbFacade.create(fileEntiti);
+		return fileName;
 	}
 
 	public File getFile(Files files) {

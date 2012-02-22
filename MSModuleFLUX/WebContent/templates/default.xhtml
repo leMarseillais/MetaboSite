@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:roa="http://richfaces.org/a4j"
+      xmlns:ror="http://richfaces.org/rich">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="icon" type="image/png" href="#{resource['img:favicon.png']}" />
+        <title>#{global.TITLE} - <ui:insert name="title">Title</ui:insert></title>
+    </h:head>
+
+    <h:body>
+        <h:outputStylesheet name="css/cssLayout.css" />
+        <h:outputStylesheet name="css/default.css" />
+        <h:outputStylesheet name="css/jsfcrud.css" />
+        <h:outputStylesheet name="css/forms.css" />
+        <h:outputScript name="js/JAVASERVERFACES-1718-Workaround.js" />
+
+        <div id="all">
+        <div id="all_b">
+            <div id="top">
+                <h:outputLink 
+                    id="indexTopLink"
+                    value="#{global.contextRoot()}"
+                    accesskey="a" />
+            </div>
+            <div id="center">
+                <c:if test="#{utilisateurController.accessTo('USER')}">
+	                <div id="left">
+	                    <ui:insert name="left">
+	                        <h:outputText
+	                            styleClass="titleMenu"
+	                            value="#{utilisateurController.userCo.login}" />
+	                    </ui:insert>
+	                </div>
+                </c:if>
+                <c:if test="#{utilisateurController.userCo.connected}">
+                    <div id="content" class="left_content" style="position: relative;">
+                        <roa:queue 
+                            onrequestqueue="waitAdd(#{ror:element('wait')})"
+                            onrequestdequeue="waitRemove(#{ror:element('wait')})" />
+                        <h:graphicImage 
+                            id="wait"
+                            style="border: 1px solid white; position: absolute; top: 0; right: 0; display: none" 
+                            name="img/wait.gif" alt="wait" />
+                        <h1>> <ui:insert name="subtitle" style="position: relative"></ui:insert></h1>
+                        <ui:insert name="body">Content</ui:insert>
+                    </div>
+                </c:if>
+                <c:if test="#{!utilisateurController.userCo.connected}">
+                    <div id="content" class="left_content_notconnected" style="position: relative;">
+                        <roa:queue 
+                            onrequestqueue="waitAdd(#{ror:element('wait')})"
+                            onrequestdequeue="waitRemove(#{ror:element('wait')})" />
+                        <h:graphicImage 
+                            id="wait"
+                            style="border: 1px solid white; position: absolute; top: 0; right: 0; display: none" 
+                            name="img/wait.gif" alt="wait" />
+                        <h1>> <ui:insert name="subtitle" style="position: relative"></ui:insert></h1>
+                        <ui:insert name="body">Content</ui:insert>
+                    </div>
+                </c:if>
+            </div>
+            <div id="bottom">
+                <ui:insert name="bottom"></ui:insert>
+                <h:outputText value="#{UserI_RB.copyright}" />
+            </div>
+            <script type="text/javascript">
+                function waitAdd(elt) {
+                    elt.style.display = 'inline';
+                }
+                function waitRemove(elt) {
+                    elt.style.display = 'none';
+                }
+            </script>
+        </div>
+        </div>
+    </h:body>
+</html>
