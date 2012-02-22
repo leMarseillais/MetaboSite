@@ -24,10 +24,10 @@
         <div id="all">
         <div id="all_b">
             <div id="top">
-                <h:outputLink 
+                <h1><h:outputLink 
                     id="indexTopLink"
                     value="#{global.contextRoot()}"
-                    accesskey="a" />
+                    accesskey="a">#{global.TITLE}</h:outputLink></h1>
             </div>
             <div id="center">
                 <c:if test="#{utilisateurController.accessTo('USER')}">
@@ -48,7 +48,7 @@
                             id="wait"
                             style="border: 1px solid white; position: absolute; top: 0; right: 0; display: none" 
                             name="img/wait.gif" alt="wait" />
-                        <h1>> <ui:insert name="subtitle" style="position: relative"></ui:insert></h1>
+                        <h2>> <ui:insert name="subtitle" style="position: relative"></ui:insert></h2>
                         <ui:insert name="body">Content</ui:insert>
                     </div>
                 </c:if>

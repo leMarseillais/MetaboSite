@@ -1,6 +1,6 @@
 html, body {
     /*background-image: url("../img/background.png");*/
-    background-color: #FFF;
+    background-color: #000;
     font-size: 12px;
     font-family: Verdana, "Verdana CE",  Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
     color: #000000;  
@@ -8,7 +8,7 @@ html, body {
     height: 100%;
 }
 
-h1 {
+h2 {
     font-family: Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
     border-bottom: 1px dashed #AFAFAF; 
     font-size:  1.7em;
@@ -18,14 +18,19 @@ h1 {
     color: #3c3c3c;
 }
 
+h1 {
+	font-family: serif;
+	font-size: 2em;
+}
+
 a:link, a:visited {
-    color: #045491;
+    color: white;
     font-weight : bold;
     text-decoration: none;
 }
 
 a:link:hover, a:visited:hover  {
-    color: #045491;
+    color: white;
     font-weight : bold;
     text-decoration : underline;
 }
@@ -39,24 +44,19 @@ a:link:hover, a:visited:hover  {
 }
 
 #left a, #left a:link, #left a:visited {
-    display: block;
     font-size: 1.2em;
-    color: #045491;
+    color: white;
     font-weight: bold;
 }
 
 #left a:hover, #left a:visited:hover {
-    display: block;
-    color: #045491;
-    font-weight: bold;
-    background: rgba(102,124,73,0.5);
+    color: white;
     text-decoration: none;
 }
 
 .menuCurrentItem {
     display: block;
-    font-size: 1.2em;
-    color: #045491;
+    color: white;
     font-weight: bold;
     background: rgba(102,124,199,0.5);
 }

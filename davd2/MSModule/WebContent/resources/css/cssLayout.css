@@ -3,16 +3,16 @@
     min-height: 100%;
     margin: 0 auto;
     position: relative;
-    background: url("../img/background_content_repeatY.png") repeat-y;
+   	-webkit-box-shadow: 0px 0px 1px 1px rgba(255, 255, 255, 1);
+	-moz-box-shadow: 0px 0px 1px 1px rgba(255, 255, 255, 1);
+	box-shadow: 0px 0px 1px 1px rgba(255, 255, 255, 1);
 }
 
 #all_b {
     min-height: 500px;
-    background: transparent url("../img/background_content.png") no-repeat;
 }
 
 #top {
-    height: 100px;
     position: relative;
     background-color: transparent;
     color: white;
@@ -24,7 +24,6 @@
     display: block;
     margin-left: 10px;
     width: 402px;
-    height: 100px;
 }
 
 #center {
@@ -84,18 +83,6 @@
     background-color: #dddddd;
     padding: 5px;
     margin: 0px 170px 0px 170px;
-}
-
-#top a:link, #top a:visited {
-  color: white;
-  font-weight : bold;
-  text-decoration: none;
-}
-
-#top a:link:hover, #top a:visited:hover  {
-  color: black;
-  font-weight : bold;
-  text-decoration : underline;
 }
 
 
